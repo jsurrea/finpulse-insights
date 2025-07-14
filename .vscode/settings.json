@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 26257,
+            "driver": "CockroachDB",
+            "name": "CockroachDocker",
+            "database": "defaultdb",
+            "username": "root",
+            "password": ""
+        }
+    ]
+}
