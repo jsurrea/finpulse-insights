@@ -2,4 +2,6 @@
 .env
 
 cockroach-data/
+sa-key.json
+terraform.tfvars
 
