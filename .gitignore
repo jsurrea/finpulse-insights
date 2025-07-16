@@ -4,4 +4,6 @@
 cockroach-data/
 sa-key.json
 terraform.tfvars
+.terraform/
+.terraform.lock.hcl
 

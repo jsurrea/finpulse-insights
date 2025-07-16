@@ -188,25 +188,40 @@ resource "google_compute_instance" "cockroachdb" {
     # Wait for CockroachDB to be ready for connections
     log "Waiting for CockroachDB to accept connections..."
     retry 60 5 "docker exec cockroach-single ./cockroach sql --insecure --execute='SELECT 1;'"
+
+    # Define new working directory
+    WORKDIR="/opt/cockroach-init"
+    mkdir -p "$WORKDIR"
+    chown "$(whoami)":"$(whoami)" "$WORKDIR"  # Si se requiere, para permisos
     
     # Download initialization files
     log "Downloading initialization files..."
-    retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/init_db.sql /tmp/init_db.sql"
-    retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/load_data.go /tmp/load_data.go"
-    retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/go.mod /tmp/go.mod"
-    retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/go.sum /tmp/go.sum"
+    retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/init_db.sql $WORKDIR/init_db.sql"
+    retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/load_data.go $WORKDIR/load_data.go"
     
     # Execute DDL script
     log "Executing DDL script..."
-    docker exec cockroach-single ./cockroach sql --insecure < /tmp/init_db.sql
-    
+    cat "$WORKDIR/init_db.sql" | tee -a "$LOG_FILE"
+
+    log "Ejecutando DDL con docker exec usando database=defaultdb..."
+    if ! docker exec -i cockroach-single ./cockroach sql --insecure --database=defaultdb < "$WORKDIR/init_db.sql" 2>&1 | tee -a "$LOG_FILE"; then
+      log "ERROR: Falló la ejecución del SQL. Verifica sintaxis o base de datos correcta."
+      exit 1
+    fi
+
+
     # Install Go for data loading
     log "Installing Go..."
     apt-get install -y golang-go
     
     # Setup Go environment and load data
     log "Setting up Go environment for data loading..."
-    cd /tmp
+    export HOME="/opt/cockroach-init"
+    export GOMODCACHE="/opt/cockroach-init/go-mod-cache"
+    mkdir -p "$GOMODCACHE"
+    export GOPATH="/opt/cockroach-init/go"
+    mkdir -p "$GOPATH"
+    cd $WORKDIR
     
     # Set environment variables
     export API_TOKEN="${var.api_token}"
