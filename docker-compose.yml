@@ -3,8 +3,19 @@ services:
     image: cockroachdb/cockroach:latest
     ports:
       - "26257:26257"
-      - "8080:8080"
+      - "8000:8080"
     command: start-single-node --insecure
     volumes:
       - ./cockroach-data:/cockroach/cockroach-data
 
+  stocks-api:
+    build:
+      context: ./api
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - cockroachdb
+    environment:
+      DATABASE_URL: postgresql://root@cockroachdb:26257/defaultdb?sslmode=disable

@@ -287,7 +287,7 @@ resource "google_cloud_run_service" "stocks_api" {
   template {
     metadata {
       annotations = {
-        "autoscaling.knative.dev/maxScale"      = "2"
+        "autoscaling.knative.dev/maxScale"      = "10"
         "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.connector.id
       }
     }
