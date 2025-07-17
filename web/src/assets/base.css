@@ -1,86 +1,76 @@
-/* color palette from <https://github.com/vuejs/theme> */
+@import "tailwindcss";
+
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
-
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
-
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --background: 220 60% 98%;
+  --foreground: 220 10% 20%;
+  --card: 220 60% 98%;
+  --card-foreground: 220 10% 20%;
+  --popover: 220 60% 98%;
+  --popover-foreground: 220 10% 20%;
+  --primary: 209 92% 28%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 209 97% 50%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 177 69% 41%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 151 51% 36%;
+  --success-foreground: 0 0% 100%;
+  --warning: 16 100% 60%;
+  --warning-foreground: 0 0% 100%;
+  --neutral: 215 8% 51%;
+  --neutral-foreground: 0 0% 100%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 209 92% 28%;
+  --radius: 0.5rem;
 }
 
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
-
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
+.dark {
+  --background: 218 13% 13%;
+  --foreground: 210 40% 98%;
+  --card: 218 13% 13%;
+  --card-foreground: 210 40% 98%;
+  --popover: 218 13% 13%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 209 92% 58%;
+  --primary-foreground: 218 13% 13%;
+  --secondary: 209 97% 60%;
+  --secondary-foreground: 218 13% 13%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 177 69% 51%;
+  --accent-foreground: 218 13% 13%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 151 51% 46%;
+  --success-foreground: 0 0% 100%;
+  --warning: 16 100% 70%;
+  --warning-foreground: 0 0% 100%;
+  --neutral: 215 8% 61%;
+  --neutral-foreground: 0 0% 100%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 209 92% 58%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+code, pre, .font-mono {
+  font-family: 'IBM Plex Mono', 'Source Code Pro', monospace;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
+* {
+  border-color: var(--border);
 }
-
 body {
-  min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
-  line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
 }
