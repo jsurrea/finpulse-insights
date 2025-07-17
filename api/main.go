@@ -28,6 +28,7 @@ func main() {
     r.GET("/recommendations", listRecommendations)
     r.GET("/recommendations/:id", getRecommendationByID)
     r.GET("/analytics/summary", getAnalyticsSummary)
+    r.GET("/analytics/brokerages", getTopBrokerages)
     r.GET("/health", healthCheck)
 
     if err := r.Run("0.0.0.0:" + port); err != nil {
