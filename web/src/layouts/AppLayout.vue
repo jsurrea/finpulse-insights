@@ -1,14 +1,10 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-background text-foreground">
-    <AppHeader />
-    <div class="flex flex-1">
-      <AppSidebar />
-      <main class="flex-1 p-4">
-        <router-view />
-      </main>
-    </div>
-    <!-- Toaster, Dialogs, etc. -->
-  </div>
+  <AppHeader />
+  <AppSidebar />
+  <v-main>
+    <router-view />
+  </v-main>
+  <!-- Toaster, Dialogs, etc. -->
 </template>
 
 <script setup lang="ts">
