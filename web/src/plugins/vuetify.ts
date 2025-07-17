@@ -1,8 +1,9 @@
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import { aliases, fa } from 'vuetify/iconsets/fa'
 
-const myTheme = {
+// Paleta personalizada LIGHT
+const myLight = {
   dark: false,
   colors: {
     background: '#F8F9FC',
@@ -11,22 +12,39 @@ const myTheme = {
     secondary: '#048CFC',
     success: '#2E865F',
     warning: '#FF6B35',
-    neutral: '#6B7280',
     error: '#B00020',
+    onPrimary: '#FFFFFF',
+    neutral: '#6B7280',
+    text: '#333333'
+  }
+}
+
+// Paleta personalizada DARK
+const myDark = {
+  dark: true,
+  colors: {
+    background: '#1E2228',
+    surface: '#23272f',
+    primary: '#048CFC',
+    secondary: '#05478A',
+    success: '#4BB1A5',
+    warning: '#FFA366',
+    error: '#fff1f1',
+    onPrimary: '#23272f',
+    neutral: '#AAB0BB',
+    text: '#F8F9FC'
   }
 }
 
 export default createVuetify({
   theme: {
-    defaultTheme: 'myTheme',
-    themes: {
-      myTheme,
-    },
+    defaultTheme: 'myLight',
+    themes: { myLight, myDark }
   },
   icons: {
-    defaultSet: 'mdi',
+    defaultSet: 'fa',
     aliases,
-    sets: { mdi }
+    sets: { fa }
   },
   defaults: {
     global: {

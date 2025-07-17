@@ -6,7 +6,7 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 
 import './assets/main.css'
-import '@mdi/font/css/materialdesignicons.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 const app = createApp(App)
 
