@@ -11,12 +11,14 @@ services:
   stocks-api:
     build:
       context: ./api
+      dockerfile: Dockerfile.dev
     ports:
       - "8080:8080"
+    volumes:
+      - ./api:/app
     env_file:
       - .env
     depends_on:
       - cockroachdb
     environment:
       DATABASE_URL: postgresql://root@cockroachdb:26257/defaultdb?sslmode=disable
-    

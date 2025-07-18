@@ -11,14 +11,17 @@ import StockDetail from '@/pages/Stocks/_ticker.vue';
 
 import RecommendationsIndex from '@/pages/Recommendations/Index.vue';
 import RecommendationDetail from '@/pages/Recommendations/_id.vue';
+import AiAnalyst from '@/pages/AiAnalyst.vue';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: AppLayout,
     children: [
-      { path: '', name: 'dashboard', component: Dashboard }, // Home
+      { path: '', redirect: '/dashboard' },
+      { path: 'dashboard', name: 'dashboard', component: Dashboard },
       { path: 'analytics', name: 'analytics', component: Analytics },
+      { path: 'ai-analyst', name: 'ai-analyst', component: AiAnalyst },
       { path: 'health', name: 'health', component: Health },
       {
         path: 'stocks',
