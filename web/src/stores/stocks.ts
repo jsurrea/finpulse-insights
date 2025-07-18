@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import type { Stock, StockDetail, Pagination } from '@/utils/types'
-import { getStocks, getStockDetail } from '@/utils/api'
+import { getStocks, getStockDetail, getTopBrokerages } from '@/utils/api'
 
 interface StocksState {
   stocks: Stock[]
+  brokerages: string[]
   currentStock: StockDetail | null
   loading: boolean
   error: string | null
@@ -19,6 +20,7 @@ interface StocksState {
 export const useStocks = defineStore('stocks', {
   state: (): StocksState => ({
     stocks: [],
+    brokerages: [],
     currentStock: null,
     loading: false,
     error: null,
@@ -58,6 +60,14 @@ export const useStocks = defineStore('stocks', {
         this.error = err.message || 'Error fetching stock detail'
       } finally {
         this.loading = false
+      }
+    },
+    async fetchBrokerages() {
+      try {
+        const arr = await getTopBrokerages()
+        this.brokerages = arr.map(b => b.name)
+      } catch (err: any) {
+        this.brokerages = []
       }
     },
     applyFilters(filters: Partial<StocksState['filters']>) {
