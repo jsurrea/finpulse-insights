@@ -21,9 +21,9 @@ func listStocks(c *gin.Context) {
     brokerage := c.Query("brokerage")
 
     var stocks []struct {
-        Ticker    string
-        Company   string
-        Brokerage string
+        Ticker    string `json:"ticker"`
+        Company   string `json:"company"`
+        Brokerage string `json:"brokerage"`
     }
 
     query := db.Model(&StockRecommendation{}).
