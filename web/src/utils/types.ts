@@ -61,3 +61,25 @@ export interface BrokerageSummary {
   name: string;
   stockCount: number;
 }
+
+export interface AIAnalysisRequest {
+  ticker: string
+  company: string
+}
+
+export interface AIAnalysisResult {
+  ticker: string
+  company: string
+  summary: string
+  confidence_score?: number
+  recommendation?: 'BUY' | 'SELL' | 'HOLD'
+  key_factors?: string[]
+  risk_assessment?: string
+  timestamp: string
+}
+
+export interface AIAnalysisError {
+  message: string
+  code?: string
+}
+
