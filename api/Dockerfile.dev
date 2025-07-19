@@ -1,0 +1,15 @@
+# Dockerfile.dev
+
+FROM golang:alpine
+
+WORKDIR /app
+
+# Instala dependencias
+RUN apk add --no-cache git curl && \
+    go install github.com/air-verse/air@latest
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["air"]

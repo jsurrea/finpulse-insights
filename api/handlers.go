@@ -21,9 +21,9 @@ func listStocks(c *gin.Context) {
     brokerage := c.Query("brokerage")
 
     var stocks []struct {
-        Ticker    string
-        Company   string
-        Brokerage string
+        Ticker    string `json:"ticker"`
+        Company   string `json:"company"`
+        Brokerage string `json:"brokerage"`
     }
 
     query := db.Model(&StockRecommendation{}).
@@ -216,6 +216,27 @@ func getAnalyticsSummary(c *gin.Context) {
         "hold_percentage":      percent(holdCount, totalRecommendations),
         "average_confidence":   avgConfidence,
     })
+}
+
+func getTopBrokerages(c *gin.Context) {
+    type Brokerage struct {
+        Name       string `json:"name"`
+        StockCount int    `json:"stockCount"`
+    }
+    var results []Brokerage
+
+    err := db.Model(&StockRecommendation{}).
+        Select("brokerage AS name, COUNT(DISTINCT ticker) AS stock_count").
+        Group("brokerage").
+        Order("stock_count DESC").
+        Scan(&results).Error
+
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, results)
 }
 
 func healthCheck(c *gin.Context) {

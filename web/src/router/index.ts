@@ -1,23 +1,49 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+
+import AppLayout from '@/layouts/AppLayout.vue';
+
+import Dashboard from '@/pages/Dashboard.vue';
+import Analytics from '@/pages/Analytics.vue';
+import Health from '@/pages/Health.vue';
+
+import StocksIndex from '@/pages/Stocks/Index.vue';
+import StockDetail from '@/pages/Stocks/_ticker.vue';
+
+import RecommendationsIndex from '@/pages/Recommendations/Index.vue';
+import RecommendationDetail from '@/pages/Recommendations/_id.vue';
+import AiAnalyst from '@/pages/AiAnalyst.vue';
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: AppLayout,
+    children: [
+      { path: '', redirect: '/dashboard' },
+      { path: 'dashboard', name: 'dashboard', component: Dashboard },
+      { path: 'analytics', name: 'analytics', component: Analytics },
+      { path: 'ai-analyst', name: 'ai-analyst', component: AiAnalyst },
+      { path: 'health', name: 'health', component: Health },
+      {
+        path: 'stocks',
+        children: [
+          { path: '', name: 'stocks', component: StocksIndex },
+          { path: ':ticker', name: 'stock-detail', component: StockDetail, props: true },
+        ]
+      },
+      {
+        path: 'recommendations',
+        children: [
+          { path: '', name: 'recommendations', component: RecommendationsIndex },
+          { path: ':id', name: 'recommendation-detail', component: RecommendationDetail, props: true },
+        ]
+      }
+    ]
+  },
+];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
-    },
-  ],
-})
+  history: createWebHistory(),
+  routes,
+});
 
-export default router
+export default router;
