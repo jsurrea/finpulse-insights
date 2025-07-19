@@ -54,7 +54,7 @@ export interface AnalyticsSummary {
 export interface HealthStatus {
   status: 'ok' | 'error' | 'degraded';
   database: 'connected' | 'disconnected';
-  uptime?: number;
+  uptime: number;
 }
 
 export interface BrokerageSummary {

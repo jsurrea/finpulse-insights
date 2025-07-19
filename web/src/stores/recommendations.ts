@@ -43,7 +43,14 @@ export const useRecommendations = defineStore('recommendations', {
         const { data, pagination } = await getRecommendations(
           this.filters.page,
           this.filters.limit,
-          this.filters.ticker
+          this.filters.ticker,
+          this.filters.company,
+          this.filters.brokerage,
+          this.filters.action,
+          this.filters.rating,
+          this.filters.date_from,
+          this.filters.date_to,
+          this.filters.sort
         )
         this.recommendations = data
         this.pagination = pagination
