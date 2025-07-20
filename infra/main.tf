@@ -395,10 +395,10 @@ resource "google_cloud_run_domain_mapping" "web_domain" {
   }
 
   spec {
-    route_name = google_cloud_run_service.frontend.name
+    route_name = google_cloud_run_service.stocks_web.name
   }
 
-  depends_on = [google_cloud_run_service.frontend]
+  depends_on = [google_cloud_run_service.stocks_web]
 }
 
 # Domain Mapping API
@@ -416,5 +416,3 @@ resource "google_cloud_run_domain_mapping" "api_domain" {
 
   depends_on = [google_cloud_run_service.stocks_api]
 }
-
-
