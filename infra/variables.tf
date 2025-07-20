@@ -15,8 +15,13 @@ variable "zone" {
   default     = "us-central1-a"
 }
 
-variable "image_url" {
-  description = "Container image URL"
+variable "api_image_url" {
+  description = "Container image URL for API service"
+  type        = string
+}
+
+variable "web_image_url" {
+  description = "Container image URL for web service"
   type        = string
 }
 

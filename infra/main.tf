@@ -279,7 +279,7 @@ resource "google_vpc_access_connector" "connector" {
   region        = var.region
 }
 
-# Cloud Run service
+# Cloud Run service for API
 resource "google_cloud_run_service" "stocks_api" {
   name     = "stocks-api"
   location = var.region
@@ -294,7 +294,7 @@ resource "google_cloud_run_service" "stocks_api" {
     
     spec {
       containers {
-        image = var.image_url
+        image = var.api_image_url
         
         ports {
           container_port = 8080
@@ -323,10 +323,98 @@ resource "google_cloud_run_service" "stocks_api" {
   depends_on = [google_compute_instance.cockroachdb]
 }
 
+# Cloud Run Frontend
+resource "google_cloud_run_service" "stocks_web" {
+  name     = "stocks-web"
+  location = var.region
+
+  template {
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale" = "10"
+      }
+    }
+    
+    spec {
+      containers {
+        image = var.web_image_url
+        
+        ports {
+          container_port = 80
+        }
+        
+        env {
+          name  = "VITE_API_BASE_URL"
+          value = google_cloud_run_service.stocks_api.status[0].url
+        }
+        
+        resources {
+          limits = {
+            memory = "256Mi"
+            cpu    = "500m"
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [google_cloud_run_service.stocks_api]
+}
+
+
 # Allow public access to Cloud Run
-resource "google_cloud_run_service_iam_member" "public_access" {
+resource "google_cloud_run_service_iam_member" "api_public_access" {
   service  = google_cloud_run_service.stocks_api.name
   location = google_cloud_run_service.stocks_api.location
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
+
+resource "google_cloud_run_service_iam_member" "stocks_web_public_access" {
+  service  = google_cloud_run_service.stocks_web.name
+  location = google_cloud_run_service.stocks_web.location
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
+
+# DNS Managed Zone
+resource "google_dns_managed_zone" "main_zone" {
+  name     = "finpulseinsights-zone"
+  dns_name = "finpulseinsights.com."
+  
+  description = "Zona DNS para finpulseinsights.com"
+}
+
+# Domain Mapping Frontend
+resource "google_cloud_run_domain_mapping" "web_domain" {
+  location = var.region
+  name     = "finpulseinsights.com"
+
+  metadata {
+    namespace = var.project_id
+  }
+
+  spec {
+    route_name = google_cloud_run_service.frontend.name
+  }
+
+  depends_on = [google_cloud_run_service.frontend]
+}
+
+# Domain Mapping API
+resource "google_cloud_run_domain_mapping" "api_domain" {
+  location = var.region
+  name     = "api.finpulseinsights.com"
+
+  metadata {
+    namespace = var.project_id
+  }
+
+  spec {
+    route_name = google_cloud_run_service.stocks_api.name
+  }
+
+  depends_on = [google_cloud_run_service.stocks_api]
+}
+
+

@@ -37,3 +37,12 @@ For e2e testing, run:
 npx playwright install
 npm run test:e2e
 ```
+
+To push new updates to the GCP container registry, run these commands. Update the variables as needed.
+
+```bash
+docker build --platform=linux/amd64 -t stocks-web:latest .
+docker tag stocks-web:latest gcr.io/truora-stocks/stocks-web:latest
+docker push gcr.io/truora-stocks/stocks-web:latest
+```
+
