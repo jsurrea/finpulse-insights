@@ -3,12 +3,7 @@
     <!-- Loading State -->
     <div v-if="loading" class="loading-state">
       <div class="d-flex flex-column align-center ga-4">
-        <v-progress-circular
-          indeterminate
-          size="48"
-          color="primary"
-          width="4"
-        />
+        <v-progress-circular indeterminate size="48" color="primary" width="4" />
         <div class="text-center">
           <div class="text-h6 mb-1">Generating insights...</div>
           <div class="text-body-2 text-medium-emphasis">
@@ -19,16 +14,10 @@
     </div>
 
     <!-- Analysis Result -->
-    <v-card
-      v-else-if="analysis"
-      class="analysis-card"
-      :class="analysisCardClasses"
-    >
+    <v-card v-else-if="analysis" class="analysis-card" :class="analysisCardClasses">
       <v-card-title class="d-flex align-center ga-2 pb-2">
         <v-icon color="primary" size="24">fas fa-sparkles</v-icon>
-        <span class="text-lg font-weight-bold">
-          Analysis for {{ analysis.ticker }}
-        </span>
+        <span class="text-lg font-weight-bold"> Analysis for {{ analysis.ticker }} </span>
         <v-spacer />
         <v-chip
           v-if="analysis.recommendation"
@@ -122,9 +111,7 @@
       <div class="text-center text-medium-emphasis">
         <v-icon size="48" class="mb-3">fas fa-chart-line</v-icon>
         <div class="text-h6 mb-1">Ready for Analysis</div>
-        <div class="text-body-2">
-          Your AI-powered analysis will appear here.
-        </div>
+        <div class="text-body-2">Your AI-powered analysis will appear here.</div>
       </div>
     </div>
   </div>
@@ -147,16 +134,20 @@ const analysisCardClasses = computed(() => [
   {
     'analysis-positive': props.analysis?.recommendation === 'BUY',
     'analysis-negative': props.analysis?.recommendation === 'SELL',
-    'analysis-neutral': props.analysis?.recommendation === 'HOLD'
-  }
+    'analysis-neutral': props.analysis?.recommendation === 'HOLD',
+  },
 ])
 
 const recommendationColor = computed(() => {
   switch (props.analysis?.recommendation) {
-    case 'BUY': return 'success'
-    case 'SELL': return 'error'
-    case 'HOLD': return 'warning'
-    default: return 'primary'
+    case 'BUY':
+      return 'success'
+    case 'SELL':
+      return 'error'
+    case 'HOLD':
+      return 'warning'
+    default:
+      return 'primary'
   }
 })
 

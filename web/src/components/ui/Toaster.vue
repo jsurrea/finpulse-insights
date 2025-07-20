@@ -2,28 +2,13 @@
   <teleport to="body">
     <div class="toaster-container">
       <transition-group name="toast" tag="div">
-        <div
-          v-for="toast in toasts"
-          :key="toast.id"
-          :class="toastClasses(toast)"
-        >
-          <v-icon
-            :icon="getToastIcon(toast.type)"
-            :color="toast.type"
-            size="20"
-            class="mr-3"
-          />
+        <div v-for="toast in toasts" :key="toast.id" :class="toastClasses(toast)">
+          <v-icon :icon="getToastIcon(toast.type)" :color="toast.type" size="20" class="mr-3" />
           <div class="toast-content">
             <div v-if="toast.title" class="toast-title">{{ toast.title }}</div>
             <div class="toast-message">{{ toast.message }}</div>
           </div>
-          <v-btn
-            icon
-            variant="text"
-            size="small"
-            @click="removeToast(toast.id)"
-            class="ml-2"
-          >
+          <v-btn icon variant="text" size="small" @click="removeToast(toast.id)" class="ml-2">
             <v-icon size="16">fas fa-times</v-icon>
           </v-btn>
         </div>
@@ -62,7 +47,7 @@ function addToast(toast: Omit<Toast, 'id'>) {
 }
 
 function removeToast(id: string) {
-  const index = toasts.value.findIndex(t => t.id === id)
+  const index = toasts.value.findIndex((t) => t.id === id)
   if (index > -1) {
     toasts.value.splice(index, 1)
   }
@@ -73,19 +58,21 @@ function clearAll() {
 }
 
 function toastClasses(toast: Toast) {
-  return [
-    'toast',
-    `toast-${toast.type}`
-  ]
+  return ['toast', `toast-${toast.type}`]
 }
 
 function getToastIcon(type: Toast['type']) {
   switch (type) {
-    case 'success': return 'fas fa-check-circle'
-    case 'error': return 'fas fa-times-circle'
-    case 'warning': return 'fas fa-exclamation-triangle'
-    case 'info': return 'fas fa-info-circle'
-    default: return 'fas fa-info-circle'
+    case 'success':
+      return 'fas fa-check-circle'
+    case 'error':
+      return 'fas fa-times-circle'
+    case 'warning':
+      return 'fas fa-exclamation-triangle'
+    case 'info':
+      return 'fas fa-info-circle'
+    default:
+      return 'fas fa-info-circle'
   }
 }
 
@@ -97,7 +84,7 @@ defineExpose({
   success: (message: string, title?: string) => addToast({ type: 'success', message, title }),
   error: (message: string, title?: string) => addToast({ type: 'error', message, title }),
   warning: (message: string, title?: string) => addToast({ type: 'warning', message, title }),
-  info: (message: string, title?: string) => addToast({ type: 'info', message, title })
+  info: (message: string, title?: string) => addToast({ type: 'info', message, title }),
 })
 </script>
 

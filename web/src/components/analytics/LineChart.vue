@@ -4,12 +4,8 @@
       <span class="text-lg font-weight-bold">{{ title }}</span>
     </v-card-title>
     <v-card-text class="pa-4">
-      <div class="chart-container" style="width: 100%; height: 300px;">
-        <Line
-          v-if="chartData"
-          :data="chartData"
-          :options="chartOptions"
-        />
+      <div class="chart-container" style="width: 100%; height: 300px">
+        <Line v-if="chartData" :data="chartData" :options="chartOptions" />
         <div v-else class="d-flex justify-center align-center h-100">
           <v-progress-circular indeterminate color="primary" />
         </div>
@@ -31,7 +27,7 @@ import {
   Tooltip,
   Legend,
   Filler,
-  type ChartOptions
+  type ChartOptions,
 } from 'chart.js'
 
 ChartJS.register(
@@ -42,7 +38,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 )
 
 interface LineChartProps {
@@ -60,11 +56,11 @@ const chartData = computed(() => {
   if (!props.data) return null
 
   return {
-    labels: props.data.map(item => item.date),
+    labels: props.data.map((item) => item.date),
     datasets: [
       {
         label: 'Average Confidence',
-        data: props.data.map(item => item.confidence),
+        data: props.data.map((item) => item.confidence),
         borderColor: 'rgb(var(--v-theme-primary))',
         backgroundColor: 'rgba(var(--v-theme-primary-rgb), 0.1)',
         fill: true,
@@ -72,11 +68,11 @@ const chartData = computed(() => {
         pointBackgroundColor: 'rgb(var(--v-theme-primary))',
         pointBorderColor: 'white',
         pointBorderWidth: 2,
-        pointRadius: 4
+        pointRadius: 4,
       },
       {
         label: 'Recommendation Volume',
-        data: props.data.map(item => item.volume),
+        data: props.data.map((item) => item.volume),
         borderColor: 'rgb(var(--v-theme-secondary))',
         backgroundColor: 'rgba(var(--v-theme-secondary-rgb), 0.1)',
         fill: true,
@@ -85,9 +81,9 @@ const chartData = computed(() => {
         pointBorderColor: 'white',
         pointBorderWidth: 2,
         pointRadius: 4,
-        yAxisID: 'y1'
-      }
-    ]
+        yAxisID: 'y1',
+      },
+    ],
   }
 })
 
@@ -98,13 +94,13 @@ const chartOptions: ChartOptions<'line'> = {
     x: {
       grid: {
         display: true,
-        color: 'rgba(var(--v-theme-outline-rgb), 0.2)'
+        color: 'rgba(var(--v-theme-outline-rgb), 0.2)',
       },
       ticks: {
         font: {
-          family: 'Inter, system-ui, sans-serif'
-        }
-      }
+          family: 'Inter, system-ui, sans-serif',
+        },
+      },
     },
     y: {
       type: 'linear',
@@ -115,9 +111,9 @@ const chartOptions: ChartOptions<'line'> = {
       ticks: {
         callback: (value) => `${(Number(value) * 100).toFixed(0)}%`,
         font: {
-          family: 'Inter, system-ui, sans-serif'
-        }
-      }
+          family: 'Inter, system-ui, sans-serif',
+        },
+      },
     },
     y1: {
       type: 'linear',
@@ -125,32 +121,32 @@ const chartOptions: ChartOptions<'line'> = {
       position: 'right' as const,
       beginAtZero: true,
       grid: {
-        drawOnChartArea: false
+        drawOnChartArea: false,
       },
       ticks: {
         font: {
-          family: 'Inter, system-ui, sans-serif'
-        }
-      }
-    }
+          family: 'Inter, system-ui, sans-serif',
+        },
+      },
+    },
   },
   plugins: {
     legend: {
       position: 'top' as const,
       labels: {
         font: {
-          family: 'Inter, system-ui, sans-serif'
+          family: 'Inter, system-ui, sans-serif',
         },
-        usePointStyle: true
-      }
+        usePointStyle: true,
+      },
     },
     tooltip: {
       backgroundColor: 'rgb(var(--v-theme-surface))',
       titleColor: 'rgb(var(--v-theme-on-surface))',
       bodyColor: 'rgb(var(--v-theme-on-surface))',
       borderColor: 'rgb(var(--v-theme-outline))',
-      borderWidth: 1
-    }
-  }
+      borderWidth: 1,
+    },
+  },
 }
 </script>

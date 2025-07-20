@@ -12,7 +12,12 @@ export interface PaginationEmits {
 }
 
 export interface ToasterMethods {
-  addToast: (toast: { type: 'success' | 'error' | 'warning' | 'info', title?: string, message: string, duration?: number }) => string
+  addToast: (toast: {
+    type: 'success' | 'error' | 'warning' | 'info'
+    title?: string
+    message: string
+    duration?: number
+  }) => string
   removeToast: (id: string) => void
   clearAll: () => void
   success: (message: string, title?: string) => string

@@ -2,9 +2,7 @@
   <section class="recommendations-page">
     <div class="mb-8">
       <h1 class="text-h4 font-weight-bold mb-2">Broker Recommendations</h1>
-      <p class="text-body-2">
-        Browse the latest stock recommendations from top brokerages.
-      </p>
+      <p class="text-body-2">Browse the latest stock recommendations from top brokerages.</p>
     </div>
 
     <v-card>
@@ -13,10 +11,7 @@
         Page {{ store.pagination.page }} of {{ totalPages }}
       </v-card-subtitle>
 
-      <RecommendationFilters
-        :loading="store.loading"
-        @filters-changed="handleFiltersChanged"
-      />
+      <RecommendationFilters :loading="store.loading" @filters-changed="handleFiltersChanged" />
 
       <v-card-text>
         <v-data-table
@@ -59,11 +54,7 @@
 
     <!-- Pagination Controls -->
     <div class="d-flex justify-space-between align-center mt-6">
-      <v-btn
-        variant="outlined"
-        :disabled="store.filters.page === 1"
-        @click="changePage(-1)"
-      >
+      <v-btn variant="outlined" :disabled="store.filters.page === 1" @click="changePage(-1)">
         Previous
       </v-btn>
 
@@ -71,13 +62,7 @@
         Showing {{ showingStart }} - {{ showingEnd }} of {{ store.pagination?.total || 0 }}
       </span>
 
-      <v-btn
-        variant="outlined"
-        :disabled="!canGoNext"
-        @click="changePage(1)"
-      >
-        Next
-      </v-btn>
+      <v-btn variant="outlined" :disabled="!canGoNext" @click="changePage(1)"> Next </v-btn>
     </div>
 
     <!-- Error State -->
@@ -107,27 +92,25 @@ const tableHeaders = [
   { title: 'Recommendation', value: 'recommendation', width: 140 },
   { title: 'Confidence', value: 'confidence', align: 'end', width: 100 },
   { title: 'Date', value: 'time', align: 'end', width: 120 },
-  { title: '', value: 'actions', width: 60, sortable: false }
+  { title: '', value: 'actions', width: 60, sortable: false },
 ]
 
 const totalPages = computed(() =>
-  store.pagination ? Math.ceil(store.pagination.total / store.pagination.limit) : 1
+  store.pagination ? Math.ceil(store.pagination.total / store.pagination.limit) : 1,
 )
 
 const showingStart = computed(() =>
-  store.pagination ? ((store.pagination.page - 1) * store.pagination.limit) + 1 : 0
+  store.pagination ? (store.pagination.page - 1) * store.pagination.limit + 1 : 0,
 )
 
 const showingEnd = computed(() =>
   store.pagination
     ? Math.min(store.pagination.page * store.pagination.limit, store.pagination.total)
-    : 0
+    : 0,
 )
 
 const canGoNext = computed(() =>
-  store.pagination
-    ? store.filters.page * store.filters.limit < store.pagination.total
-    : false
+  store.pagination ? store.filters.page * store.filters.limit < store.pagination.total : false,
 )
 
 function formatDate(dateString: string): string {

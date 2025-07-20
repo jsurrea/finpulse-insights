@@ -28,9 +28,9 @@ export const useStocks = defineStore('stocks', {
       page: 1,
       limit: 20,
       search: '',
-      brokerage: 'all'
+      brokerage: 'all',
     },
-    pagination: null
+    pagination: null,
   }),
   actions: {
     async fetchStocks() {
@@ -41,7 +41,7 @@ export const useStocks = defineStore('stocks', {
           this.filters.page,
           this.filters.limit,
           this.filters.search,
-          this.filters.brokerage
+          this.filters.brokerage,
         )
         this.stocks = data
         this.pagination = pagination
@@ -65,7 +65,7 @@ export const useStocks = defineStore('stocks', {
     async fetchBrokerages() {
       try {
         const arr = await getTopBrokerages()
-        this.brokerages = arr.map(b => b.name)
+        this.brokerages = arr.map((b) => b.name)
       } catch (err: any) {
         this.brokerages = []
       }
@@ -76,6 +76,6 @@ export const useStocks = defineStore('stocks', {
     },
     clearCurrentStock() {
       this.currentStock = null
-    }
-  }
+    },
+  },
 })

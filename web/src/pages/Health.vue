@@ -4,9 +4,7 @@
       <div class="d-flex justify-space-between align-center mb-2">
         <div>
           <h1 class="text-h4 font-weight-bold mb-1">System Health</h1>
-          <p class="text-body-2 text-medium-emphasis">
-            Real-time status of the FinPulse API.
-          </p>
+          <p class="text-body-2 text-medium-emphasis">Real-time status of the FinPulse API.</p>
         </div>
         <div class="d-flex align-center ga-2">
           <v-chip
@@ -78,11 +76,7 @@
         <v-row>
           <v-col cols="12" sm="6" md="3">
             <div class="text-center">
-              <v-icon
-                :color="store.isHealthy ? 'success' : 'error'"
-                size="32"
-                class="mb-2"
-              >
+              <v-icon :color="store.isHealthy ? 'success' : 'error'" size="32" class="mb-2">
                 {{ store.isHealthy ? 'fas fa-heart' : 'fas fa-heart-broken' }}
               </v-icon>
               <div class="text-body-2 font-weight-medium">
@@ -106,9 +100,7 @@
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <div class="text-center">
-              <v-icon color="info" size="32" class="mb-2">
-                fas fa-clock
-              </v-icon>
+              <v-icon color="info" size="32" class="mb-2"> fas fa-clock </v-icon>
               <div class="text-body-2 font-weight-medium">
                 {{ formatUptimeDetailed(store.healthStatus.uptime) }}
               </div>
@@ -116,12 +108,8 @@
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <div class="text-center">
-              <v-icon color="success" size="32" class="mb-2">
-                fas fa-shield-check
-              </v-icon>
-              <div class="text-body-2 font-weight-medium">
-                Monitoring Active
-              </div>
+              <v-icon color="success" size="32" class="mb-2"> fas fa-shield-check </v-icon>
+              <div class="text-body-2 font-weight-medium">Monitoring Active</div>
             </div>
           </v-col>
         </v-row>
@@ -131,12 +119,7 @@
     <!-- Loading State -->
     <div v-if="store.loading && !store.healthStatus" class="d-flex justify-center py-12">
       <div class="text-center">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-          size="64"
-          class="mb-4"
-        />
+        <v-progress-circular indeterminate color="primary" size="64" class="mb-4" />
         <div class="text-body-1">Checking system health...</div>
       </div>
     </div>
@@ -157,16 +140,12 @@
     <!-- No Data State -->
     <v-card v-if="!store.healthStatus && !store.loading && !store.error" class="mt-6">
       <v-card-text class="text-center py-12">
-        <v-icon size="64" color="grey" class="mb-4">
-          fas fa-question-circle
-        </v-icon>
+        <v-icon size="64" color="grey" class="mb-4"> fas fa-question-circle </v-icon>
         <div class="text-h6 mb-2">No Health Data Available</div>
         <div class="text-body-2 text-medium-emphasis mb-4">
           Unable to retrieve system health information.
         </div>
-        <v-btn color="primary" @click="store.fetchHealth">
-          Try Again
-        </v-btn>
+        <v-btn color="primary" @click="store.fetchHealth"> Try Again </v-btn>
       </v-card-text>
     </v-card>
   </section>
@@ -187,28 +166,40 @@ const formattedUptime = computed(() => {
 
 const systemStatusColor = computed(() => {
   switch (store.systemStatus) {
-    case 'healthy': return 'success'
-    case 'critical': return 'error'
-    case 'degraded': return 'warning'
-    default: return 'grey'
+    case 'healthy':
+      return 'success'
+    case 'critical':
+      return 'error'
+    case 'degraded':
+      return 'warning'
+    default:
+      return 'grey'
   }
 })
 
 const systemStatusIcon = computed(() => {
   switch (store.systemStatus) {
-    case 'healthy': return 'fas fa-check-circle'
-    case 'critical': return 'fas fa-times-circle'
-    case 'degraded': return 'fas fa-exclamation-triangle'
-    default: return 'fas fa-question-circle'
+    case 'healthy':
+      return 'fas fa-check-circle'
+    case 'critical':
+      return 'fas fa-times-circle'
+    case 'degraded':
+      return 'fas fa-exclamation-triangle'
+    default:
+      return 'fas fa-question-circle'
   }
 })
 
 const systemStatusText = computed(() => {
   switch (store.systemStatus) {
-    case 'healthy': return 'All Systems Operational'
-    case 'critical': return 'Critical Issues'
-    case 'degraded': return 'Degraded Performance'
-    default: return 'Status Unknown'
+    case 'healthy':
+      return 'All Systems Operational'
+    case 'critical':
+      return 'Critical Issues'
+    case 'degraded':
+      return 'Degraded Performance'
+    default:
+      return 'Status Unknown'
   }
 })
 
@@ -234,7 +225,6 @@ function formatUptimeDetailed(seconds: number): string {
 function formatLastUpdated(date: Date): string {
   return format(date, 'MMM d, yyyy HH:mm:ss')
 }
-
 </script>
 
 <style scoped>

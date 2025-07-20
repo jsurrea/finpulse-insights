@@ -1,12 +1,8 @@
 <template>
   <div class="stocks-page">
     <div class="mb-8">
-      <h1 class="text-3xl font-weight-bold tracking-tight stocks-title mb-2">
-        Stocks
-      </h1>
-      <p class="text-medium-emphasis">
-        Search and browse stocks tracked by FinPulse.
-      </p>
+      <h1 class="text-3xl font-weight-bold tracking-tight stocks-title mb-2">Stocks</h1>
+      <p class="text-medium-emphasis">Search and browse stocks tracked by FinPulse.</p>
     </div>
 
     <v-card elevation="2">
@@ -25,11 +21,7 @@
 
     <!-- Pagination -->
     <div class="d-flex justify-space-between align-center mt-8">
-      <v-btn
-        variant="outlined"
-        :disabled="currentPage <= 1"
-        @click="goToPage(currentPage - 1)"
-      >
+      <v-btn variant="outlined" :disabled="currentPage <= 1" @click="goToPage(currentPage - 1)">
         Previous
       </v-btn>
 
@@ -52,13 +44,7 @@
     </div>
 
     <!-- Error State -->
-    <v-alert
-      v-if="error"
-      type="error"
-      class="mt-4"
-      :text="error"
-      dismissible
-    />
+    <v-alert v-if="error" type="error" class="mt-4" :text="error" dismissible />
   </div>
 </template>
 
@@ -80,7 +66,9 @@ const error = ref<string | null>(null)
 
 const currentPage = computed(() => Number(route.query.page) || 1)
 const totalPages = computed(() =>
-  stocksStore.pagination ? Math.ceil(stocksStore.pagination.total / stocksStore.pagination.limit) : 1
+  stocksStore.pagination
+    ? Math.ceil(stocksStore.pagination.total / stocksStore.pagination.limit)
+    : 1,
 )
 
 const loadStocks = async () => {
@@ -88,19 +76,18 @@ const loadStocks = async () => {
     loading.value = true
     error.value = null
 
-    const search = route.query.search as string || ''
-    const brokerage = route.query.brokerage as string || 'all'
+    const search = (route.query.search as string) || ''
+    const brokerage = (route.query.brokerage as string) || 'all'
 
     stocksStore.applyFilters({
       page: currentPage.value,
       limit: 10,
       search,
-      brokerage
+      brokerage,
     })
 
     await stocksStore.fetchStocks()
     stocks.value = stocksStore.stocks
-
   } catch (err: any) {
     error.value = err.message || 'Error loading stocks'
     console.error('Stocks loading error:', err)

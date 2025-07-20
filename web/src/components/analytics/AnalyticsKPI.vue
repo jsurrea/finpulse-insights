@@ -7,7 +7,10 @@
       </div>
     </v-card-title>
     <v-card-text class="pa-4 pt-0">
-      <div class="text-3xl font-weight-bold mb-1" style="font-family: 'Inter', system-ui, sans-serif;">
+      <div
+        class="text-3xl font-weight-bold mb-1"
+        style="font-family: 'Inter', system-ui, sans-serif"
+      >
         {{ formattedValue }}
       </div>
       <div v-if="change !== undefined" class="d-flex align-center">
@@ -40,7 +43,7 @@ interface AnalyticsKPIProps {
 }
 
 const props = withDefaults(defineProps<AnalyticsKPIProps>(), {
-  format: 'number'
+  format: 'number',
 })
 
 const formattedValue = computed(() => {

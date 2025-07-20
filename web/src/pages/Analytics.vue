@@ -48,16 +48,10 @@
     <!-- Charts Section -->
     <v-row class="mb-8">
       <v-col cols="12" lg="8">
-        <BarChart
-          title="Quarterly Recommendation Trends"
-          :data="store.quarterlyData"
-        />
+        <BarChart title="Quarterly Recommendation Trends" :data="store.quarterlyData" />
       </v-col>
       <v-col cols="12" lg="4">
-        <LineChart
-          title="Confidence & Volume Trends"
-          :data="store.trends"
-        />
+        <LineChart title="Confidence & Volume Trends" :data="store.trends" />
       </v-col>
     </v-row>
 
@@ -70,11 +64,7 @@
           </v-card-title>
           <v-card-text class="pa-4">
             <v-list density="compact">
-              <v-list-item
-                v-for="(sector, index) in topSectors"
-                :key="sector.name"
-                class="px-0"
-              >
+              <v-list-item v-for="(sector, index) in topSectors" :key="sector.name" class="px-0">
                 <template #prepend>
                   <v-avatar size="32" :color="getSectorColor(index)" class="mr-3">
                     <span class="text-caption font-weight-bold">{{ index + 1 }}</span>
@@ -102,36 +92,21 @@
                 <span class="text-body-2">Bullish Sentiment</span>
                 <span class="text-body-2 font-weight-bold">68%</span>
               </div>
-              <v-progress-linear
-                model-value="68"
-                color="success"
-                height="8"
-                rounded
-              />
+              <v-progress-linear model-value="68" color="success" height="8" rounded />
             </div>
             <div class="mb-4">
               <div class="d-flex justify-space-between align-center mb-2">
                 <span class="text-body-2">Bearish Sentiment</span>
                 <span class="text-body-2 font-weight-bold">22%</span>
               </div>
-              <v-progress-linear
-                model-value="22"
-                color="error"
-                height="8"
-                rounded
-              />
+              <v-progress-linear model-value="22" color="error" height="8" rounded />
             </div>
             <div>
               <div class="d-flex justify-space-between align-center mb-2">
                 <span class="text-body-2">Neutral Sentiment</span>
                 <span class="text-body-2 font-weight-bold">10%</span>
               </div>
-              <v-progress-linear
-                model-value="10"
-                color="warning"
-                height="8"
-                rounded
-              />
+              <v-progress-linear model-value="10" color="warning" height="8" rounded />
             </div>
           </v-card-text>
         </v-card>
@@ -170,7 +145,7 @@ const topSectors = [
   { name: 'Healthcare', growth: 8.7 },
   { name: 'Financial Services', growth: 6.2 },
   { name: 'Consumer Goods', growth: 4.1 },
-  { name: 'Energy', growth: 3.8 }
+  { name: 'Energy', growth: 3.8 },
 ]
 
 function getSectorColor(index: number): string {

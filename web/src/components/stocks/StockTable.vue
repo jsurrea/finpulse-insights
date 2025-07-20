@@ -8,7 +8,7 @@
             <th class="text-left font-weight-bold">Ticker</th>
             <th class="text-left font-weight-bold">Company</th>
             <th class="text-left font-weight-bold">Brokerage</th>
-            <th class="text-center" style="width: 50px;"></th>
+            <th class="text-center" style="width: 50px"></th>
           </tr>
         </thead>
         <tbody>
@@ -47,12 +47,7 @@
               <div class="text-body-2 text-medium-emphasis">{{ stock.company }}</div>
               <div class="text-body-2 text-medium-emphasis mt-1">{{ stock.brokerage }}</div>
             </div>
-            <v-btn
-              icon
-              variant="text"
-              color="primary"
-              :to="`/stocks/${stock.ticker}`"
-            >
+            <v-btn icon variant="text" color="primary" :to="`/stocks/${stock.ticker}`">
               <v-icon>fas fa-arrow-right</v-icon>
             </v-btn>
           </div>

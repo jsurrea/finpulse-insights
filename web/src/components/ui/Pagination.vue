@@ -77,7 +77,7 @@
         variant="outlined"
         density="compact"
         hide-details
-        style="min-width: 100px;"
+        style="min-width: 100px"
         @update:model-value="handlePageSizeChange"
       >
         <template #selection="{ item }">
@@ -106,7 +106,7 @@ const props = withDefaults(defineProps<PaginationProps>(), {
   loading: false,
   showPageSize: true,
   maxVisiblePages: 5,
-  pageSizes: () => [10, 20, 50, 100]
+  pageSizes: () => [10, 20, 50, 100],
 })
 
 const emit = defineEmits<{
@@ -121,10 +121,10 @@ const startItem = computed(() => (props.currentPage - 1) * props.pageSize + 1)
 const endItem = computed(() => Math.min(props.currentPage * props.pageSize, props.total))
 
 const pageSizeOptions = computed(() =>
-  props.pageSizes.map(size => ({
+  props.pageSizes.map((size) => ({
     title: `${size} per page`,
-    value: size
-  }))
+    value: size,
+  })),
 )
 
 const visiblePages = computed(() => {
@@ -154,9 +154,12 @@ function handlePageSizeChange(newSize: number) {
   emit('page-size-change', newSize)
 }
 
-watch(() => props.pageSize, (newSize) => {
-  localPageSize.value = newSize
-})
+watch(
+  () => props.pageSize,
+  (newSize) => {
+    localPageSize.value = newSize
+  },
+)
 </script>
 
 <style scoped>

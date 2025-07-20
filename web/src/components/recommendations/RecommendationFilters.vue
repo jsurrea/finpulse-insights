@@ -93,7 +93,6 @@ import { useRouter, useRoute } from 'vue-router'
 import { useDebounceFn } from '@vueuse/core'
 import { useStocks } from '@/stores/stocks'
 
-
 const emit = defineEmits<{
   'filters-changed': [filters: any]
 }>()
@@ -102,19 +101,19 @@ const stocksStore = useStocks()
 const router = useRouter()
 const route = useRoute()
 
-const ticker = ref(route.query.ticker as string || '')
-const company = ref(route.query.company as string || '')
-const brokerage = ref(route.query.brokerage as string || '')
-const action = ref(route.query.action as string || '')
-const dateFrom = ref(route.query.date_from as string || '')
-const dateTo = ref(route.query.date_to as string || '')
-const sort = ref(route.query.sort as string || 'time:desc')
+const ticker = ref((route.query.ticker as string) || '')
+const company = ref((route.query.company as string) || '')
+const brokerage = ref((route.query.brokerage as string) || '')
+const action = ref((route.query.action as string) || '')
+const dateFrom = ref((route.query.date_from as string) || '')
+const dateTo = ref((route.query.date_to as string) || '')
+const sort = ref((route.query.sort as string) || 'time:desc')
 
 const loadingBrokerages = ref(false)
 
 const brokerageOptions = computed(() => [
   { title: 'All Brokerages', value: '' },
-  ...stocksStore.brokerages.map(b => ({ title: b, value: b }))
+  ...stocksStore.brokerages.map((b) => ({ title: b, value: b })),
 ])
 
 const actionOptions = [
@@ -123,7 +122,7 @@ const actionOptions = [
   { title: 'Downgrade', value: 'downgrade' },
   { title: 'Initiate', value: 'initiate' },
   { title: 'Maintain', value: 'maintain' },
-  { title: 'Reiterate', value: 'reiterate' }
+  { title: 'Reiterate', value: 'reiterate' },
 ]
 
 const sortOptions = [
@@ -132,7 +131,7 @@ const sortOptions = [
   { title: 'Ticker (A-Z)', value: 'ticker:asc' },
   { title: 'Ticker (Z-A)', value: 'ticker:desc' },
   { title: 'Confidence (High)', value: 'confidence:desc' },
-  { title: 'Confidence (Low)', value: 'confidence:asc' }
+  { title: 'Confidence (Low)', value: 'confidence:asc' },
 ]
 
 const updateFilters = useDebounceFn(() => {
@@ -155,7 +154,7 @@ const updateFilters = useDebounceFn(() => {
     action: action.value,
     date_from: dateFrom.value,
     date_to: dateTo.value,
-    sort: sort.value
+    sort: sort.value,
   })
 }, 500)
 

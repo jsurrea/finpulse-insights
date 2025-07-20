@@ -4,12 +4,8 @@
       <span class="text-lg font-weight-bold">{{ title }}</span>
     </v-card-title>
     <v-card-text class="pa-4">
-      <div class="chart-container" style="width: 100%; height: 400px;">
-        <Bar
-          v-if="chartData"
-          :data="chartData"
-          :options="chartOptions"
-        />
+      <div class="chart-container" style="width: 100%; height: 400px">
+        <Bar v-if="chartData" :data="chartData" :options="chartOptions" />
         <div v-else class="d-flex justify-center align-center h-100">
           <v-progress-circular indeterminate color="primary" />
         </div>
@@ -29,7 +25,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  type ChartOptions
+  type ChartOptions,
 } from 'chart.js'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -50,30 +46,30 @@ const chartData = computed(() => {
   if (!props.data) return null
 
   return {
-    labels: props.data.map(item => item.name),
+    labels: props.data.map((item) => item.name),
     datasets: [
       {
         label: 'Buy',
-        data: props.data.map(item => item.buy),
+        data: props.data.map((item) => item.buy),
         backgroundColor: 'rgba(var(--v-theme-success-rgb), 0.8)',
         borderColor: 'rgb(var(--v-theme-success))',
-        borderWidth: 1
+        borderWidth: 1,
       },
       {
         label: 'Sell',
-        data: props.data.map(item => item.sell),
+        data: props.data.map((item) => item.sell),
         backgroundColor: 'rgba(var(--v-theme-warning-rgb), 0.8)',
         borderColor: 'rgb(var(--v-theme-warning))',
-        borderWidth: 1
+        borderWidth: 1,
       },
       {
         label: 'Hold',
-        data: props.data.map(item => item.hold),
+        data: props.data.map((item) => item.hold),
         backgroundColor: 'rgba(var(--v-theme-info-rgb), 0.8)',
         borderColor: 'rgb(var(--v-theme-info))',
-        borderWidth: 1
-      }
-    ]
+        borderWidth: 1,
+      },
+    ],
   }
 })
 
@@ -84,23 +80,23 @@ const chartOptions: ChartOptions<'bar'> = {
     x: {
       stacked: true,
       grid: {
-        display: false
+        display: false,
       },
       ticks: {
         font: {
-          family: 'Inter, system-ui, sans-serif'
-        }
-      }
+          family: 'Inter, system-ui, sans-serif',
+        },
+      },
     },
     y: {
       stacked: true,
       beginAtZero: true,
       ticks: {
         font: {
-          family: 'Inter, system-ui, sans-serif'
-        }
-      }
-    }
+          family: 'Inter, system-ui, sans-serif',
+        },
+      },
+    },
   },
   plugins: {
     legend: {
@@ -108,10 +104,10 @@ const chartOptions: ChartOptions<'bar'> = {
       labels: {
         font: {
           family: 'Inter, system-ui, sans-serif',
-          size: 12
+          size: 12,
         },
-        usePointStyle: true
-      }
+        usePointStyle: true,
+      },
     },
     tooltip: {
       backgroundColor: 'rgb(var(--v-theme-surface))',
@@ -120,12 +116,12 @@ const chartOptions: ChartOptions<'bar'> = {
       borderColor: 'rgb(var(--v-theme-outline))',
       borderWidth: 1,
       titleFont: {
-        family: 'Inter, system-ui, sans-serif'
+        family: 'Inter, system-ui, sans-serif',
       },
       bodyFont: {
-        family: 'Inter, system-ui, sans-serif'
-      }
-    }
-  }
+        family: 'Inter, system-ui, sans-serif',
+      },
+    },
+  },
 }
 </script>

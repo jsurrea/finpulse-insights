@@ -15,9 +15,7 @@
           <span class="text-h5">{{ store.currentRec.company }}</span>
           <span class="font-mono ml-2">({{ store.currentRec.ticker }})</span>
         </div>
-        <RecommendationBadge
-          :recommendation="store.currentRec.recommendation"
-        />
+        <RecommendationBadge :recommendation="store.currentRec.recommendation" />
       </v-card-title>
 
       <v-card-subtitle>
@@ -42,11 +40,7 @@
             />
           </v-col>
           <v-col cols="12" md="6" lg="4">
-            <InfoItem
-              icon="fas fa-tag"
-              label="Action"
-              :value="store.currentRec.action"
-            />
+            <InfoItem icon="fas fa-tag" label="Action" :value="store.currentRec.action" />
           </v-col>
           <v-col cols="12" md="6" lg="4">
             <InfoItem
@@ -59,9 +53,9 @@
             <InfoItem
               icon="fas fa-bullseye"
               label="Target Price"
-              :value="store.currentRec.target_to
-                ? `$${store.currentRec.target_to.toFixed(2)}`
-                : 'N/A'"
+              :value="
+                store.currentRec.target_to ? `$${store.currentRec.target_to.toFixed(2)}` : 'N/A'
+              "
             />
           </v-col>
           <v-col cols="12" md="6" lg="4">
@@ -83,9 +77,7 @@
     </v-card>
 
     <RouterLink :to="`/stocks/${store.currentRec.ticker}`">
-      <v-btn color="primary" append-icon="fas fa-arrow-right">
-        View Stock Details
-      </v-btn>
+      <v-btn color="primary" append-icon="fas fa-arrow-right"> View Stock Details </v-btn>
     </RouterLink>
 
     <!-- Loading State -->

@@ -24,15 +24,15 @@ import AppHeaderRight from '@/components/layout/AppHeaderRight.vue'
   grid-template-columns: auto 1fr;
   grid-template-rows: 72px 1fr;
   grid-template-areas:
-    "sidebar header"
-    "sidebar main";
+    'sidebar header'
+    'sidebar main';
   background: var(--v-theme-background);
 }
 .header-grid {
   grid-area: header;
   display: flex;
   height: 72px;
-  border-bottom: 1.5px solid var(--v-theme-outline, #E5E7EB);
+  border-bottom: 1.5px solid var(--v-theme-outline, #e5e7eb);
   background: var(--v-theme-surface);
   align-items: stretch;
 }

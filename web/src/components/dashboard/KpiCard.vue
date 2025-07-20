@@ -6,7 +6,7 @@
         <v-icon :icon="icon" size="16" class="text-muted" />
       </v-card-title>
       <v-card-text class="pa-4 pt-0">
-        <div class="text-2xl font-weight-bold" style="font-family: 'Inter', system-ui, sans-serif;">
+        <div class="text-2xl font-weight-bold" style="font-family: 'Inter', system-ui, sans-serif">
           {{ value }}
         </div>
       </v-card-text>

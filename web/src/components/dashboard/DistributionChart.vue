@@ -4,12 +4,8 @@
       <span class="text-lg font-weight-bold">Recommendation Distribution</span>
     </v-card-title>
     <v-card-text class="pa-4">
-      <div class="chart-container" style="width: 100%; height: 320px;">
-        <Doughnut
-          :data="chartData"
-          :options="chartOptions"
-          :plugins="chartPlugins"
-        />
+      <div class="chart-container" style="width: 100%; height: 320px">
+        <Doughnut :data="chartData" :options="chartOptions" :plugins="chartPlugins" />
       </div>
     </v-card-text>
   </v-card>
@@ -24,7 +20,7 @@ import {
   Tooltip,
   Legend,
   type ChartOptions,
-  type TooltipItem
+  type TooltipItem,
 } from 'chart.js'
 import type { AnalyticsSummary } from '@/utils/types'
 
@@ -40,24 +36,20 @@ const chartData = computed(() => ({
   labels: ['Buy', 'Sell', 'Hold'],
   datasets: [
     {
-      data: [
-        props.data.buy_percentage,
-        props.data.sell_percentage,
-        props.data.hold_percentage
-      ],
+      data: [props.data.buy_percentage, props.data.sell_percentage, props.data.hold_percentage],
       backgroundColor: [
         'rgb(var(--v-theme-success))',
         'rgb(var(--v-theme-warning))',
-        'rgb(var(--v-theme-info))'
+        'rgb(var(--v-theme-info))',
       ],
       borderColor: [
         'rgb(var(--v-theme-success))',
         'rgb(var(--v-theme-warning))',
-        'rgb(var(--v-theme-info))'
+        'rgb(var(--v-theme-info))',
       ],
-      borderWidth: 2
-    }
-  ]
+      borderWidth: 2,
+    },
+  ],
 }))
 
 const chartOptions: ChartOptions<'doughnut'> = {
@@ -71,9 +63,9 @@ const chartOptions: ChartOptions<'doughnut'> = {
         usePointStyle: true,
         font: {
           family: 'Inter, system-ui, sans-serif',
-          size: 14
-        }
-      }
+          size: 14,
+        },
+      },
     },
     tooltip: {
       callbacks: {
@@ -81,16 +73,16 @@ const chartOptions: ChartOptions<'doughnut'> = {
           const label = context.label || ''
           const value = context.parsed
           return `${label}: ${value.toFixed(1)}%`
-        }
+        },
       },
       backgroundColor: 'rgb(var(--v-theme-surface))',
       titleColor: 'rgb(var(--v-theme-on-surface))',
       bodyColor: 'rgb(var(--v-theme-on-surface))',
       borderColor: 'rgb(var(--v-theme-outline))',
-      borderWidth: 1
-    }
+      borderWidth: 1,
+    },
   },
-  cutout: '60%'
+  cutout: '60%',
 }
 
 const chartPlugins = [
@@ -111,8 +103,8 @@ const chartPlugins = [
 
       ctx.fillText(text, textX, textY)
       ctx.save()
-    }
-  }
+    },
+  },
 ]
 </script>
 

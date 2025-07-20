@@ -15,19 +15,10 @@
       </template>
       <template #append>
         <div class="error-actions">
-          <v-btn
-            variant="text"
-            size="small"
-            @click="showDetails = !showDetails"
-          >
+          <v-btn variant="text" size="small" @click="showDetails = !showDetails">
             {{ showDetails ? 'Hide' : 'Show' }} Details
           </v-btn>
-          <v-btn
-            variant="outlined"
-            size="small"
-            color="primary"
-            @click="handleRetry"
-          >
+          <v-btn variant="outlined" size="small" color="primary" @click="handleRetry">
             <v-icon start size="16">fas fa-redo</v-icon>
             Try Again
           </v-btn>
@@ -40,15 +31,9 @@
         <v-card-title class="text-h6">Error Details</v-card-title>
         <v-card-text>
           <div class="error-details">
-            <div class="mb-3">
-              <strong>Error:</strong> {{ errorInfo.message }}
-            </div>
-            <div class="mb-3">
-              <strong>Component:</strong> {{ errorInfo.component }}
-            </div>
-            <div class="mb-3">
-              <strong>Time:</strong> {{ errorInfo.timestamp }}
-            </div>
+            <div class="mb-3"><strong>Error:</strong> {{ errorInfo.message }}</div>
+            <div class="mb-3"><strong>Component:</strong> {{ errorInfo.component }}</div>
+            <div class="mb-3"><strong>Time:</strong> {{ errorInfo.timestamp }}</div>
             <div v-if="errorInfo.stack">
               <strong>Stack Trace:</strong>
               <pre class="error-stack">{{ errorInfo.stack }}</pre>
@@ -56,12 +41,7 @@
           </div>
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            variant="text"
-            size="small"
-            @click="copyErrorDetails"
-            prepend-icon="fas fa-copy"
-          >
+          <v-btn variant="text" size="small" @click="copyErrorDetails" prepend-icon="fas fa-copy">
             Copy Error Info
           </v-btn>
           <v-btn
@@ -99,7 +79,8 @@ interface ErrorInfo {
 
 const props = withDefaults(defineProps<ErrorBoundaryProps>(), {
   fallbackTitle: 'Something went wrong',
-  fallbackMessage: 'An unexpected error occurred. Please try again or contact support if the problem persists.'
+  fallbackMessage:
+    'An unexpected error occurred. Please try again or contact support if the problem persists.',
 })
 
 const emit = defineEmits<{
@@ -111,7 +92,7 @@ const showDetails = ref(false)
 const errorInfo = ref<ErrorInfo>({
   message: '',
   component: '',
-  timestamp: ''
+  timestamp: '',
 })
 
 const errorTitle = computed(() => props.fallbackTitle)
@@ -125,7 +106,7 @@ onErrorCaptured((error: Error, instance) => {
     message: error.message,
     component: instance?.type?.name || 'Unknown Component',
     stack: error.stack,
-    timestamp: format(new Date(), 'PPpp')
+    timestamp: format(new Date(), 'PPpp'),
   }
 
   emit('error-captured', error, errorInfo.value)
@@ -140,7 +121,7 @@ function handleRetry() {
   errorInfo.value = {
     message: '',
     component: '',
-    timestamp: ''
+    timestamp: '',
   }
 
   if (props.onRetry) {

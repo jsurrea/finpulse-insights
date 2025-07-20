@@ -1,9 +1,7 @@
 <template>
   <div class="dashboard-page">
     <div class="mb-8">
-      <h1 class="text-3xl font-weight-bold tracking-tight dashboard-title">
-        Dashboard
-      </h1>
+      <h1 class="text-3xl font-weight-bold tracking-tight dashboard-title">Dashboard</h1>
     </div>
 
     <!-- KPI Cards Grid -->
@@ -31,12 +29,7 @@
           />
         </v-col>
         <v-col cols="12" sm="6" lg="3">
-          <KpiCard
-            title="AI Analyst"
-            value="Ready"
-            icon="fas fa-robot"
-            link="/ai-analyst"
-          />
+          <KpiCard title="AI Analyst" value="Ready" icon="fas fa-robot" link="/ai-analyst" />
         </v-col>
       </v-row>
     </div>
@@ -59,13 +52,7 @@
     </div>
 
     <!-- Error State -->
-    <v-alert
-      v-if="error"
-      type="error"
-      class="mt-4"
-      :text="error"
-      dismissible
-    />
+    <v-alert v-if="error" type="error" class="mt-4" :text="error" dismissible />
   </div>
 </template>
 
@@ -96,7 +83,6 @@ const loadDashboardData = async () => {
     // Load top brokerages
     await analytics.fetchTopBrokerages()
     topBrokerages.value = analytics.topBrokerages
-
   } catch (err: any) {
     error.value = err.message || 'Error loading dashboard data'
     console.error('Dashboard error:', err)

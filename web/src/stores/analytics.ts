@@ -31,7 +31,7 @@ export const useAnalytics = defineStore('analytics', {
     quarterlyData: [],
     topBrokerages: [],
     loading: false,
-    error: null
+    error: null,
   }),
   actions: {
     async fetchSummary() {
@@ -72,7 +72,7 @@ export const useAnalytics = defineStore('analytics', {
           { name: 'Q1 2024', buy: 450, sell: 120, hold: 230 },
           { name: 'Q2 2024', buy: 520, sell: 95, hold: 285 },
           { name: 'Q3 2024', buy: 380, sell: 180, hold: 340 },
-          { name: 'Q4 2024', buy: 610, sell: 75, hold: 215 }
+          { name: 'Q4 2024', buy: 610, sell: 75, hold: 215 },
         ]
       } catch (err: any) {
         console.error('Error fetching quarterly data:', err)
@@ -80,11 +80,7 @@ export const useAnalytics = defineStore('analytics', {
       }
     },
     async fetchAllAnalytics() {
-      await Promise.all([
-        this.fetchSummary(),
-        this.fetchTrends(),
-        this.fetchQuarterlyData()
-      ])
+      await Promise.all([this.fetchSummary(), this.fetchTrends(), this.fetchQuarterlyData()])
     },
   },
 })

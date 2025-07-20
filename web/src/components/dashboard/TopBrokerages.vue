@@ -5,17 +5,9 @@
     </v-card-title>
     <v-card-text class="pa-4">
       <v-list class="pa-0">
-        <v-list-item
-          v-for="(brokerage, index) in data"
-          :key="brokerage.name"
-          class="px-0 py-3"
-        >
+        <v-list-item v-for="(brokerage, index) in data" :key="brokerage.name" class="px-0 py-3">
           <template #prepend>
-            <v-avatar
-              size="32"
-              color="surface-variant"
-              class="mr-3"
-            >
+            <v-avatar size="32" color="surface-variant" class="mr-3">
               <span class="text-sm font-weight-medium">{{ index + 1 }}</span>
             </v-avatar>
           </template>
@@ -25,12 +17,7 @@
           </v-list-item-title>
 
           <template #append>
-            <v-chip
-              size="small"
-              color="primary"
-              variant="outlined"
-              class="font-mono"
-            >
+            <v-chip size="small" color="primary" variant="outlined" class="font-mono">
               {{ brokerage.stockCount }} stocks
             </v-chip>
           </template>

@@ -30,22 +30,28 @@ const props = withDefaults(defineProps<LoadingSpinnerProps>(), {
   size: 'medium',
   color: 'primary',
   overlay: false,
-  centered: true
+  centered: true,
 })
 
 const spinnerSize = computed(() => {
   switch (props.size) {
-    case 'small': return 24
-    case 'large': return 64
-    default: return 40
+    case 'small':
+      return 24
+    case 'large':
+      return 64
+    default:
+      return 40
   }
 })
 
 const spinnerWidth = computed(() => {
   switch (props.size) {
-    case 'small': return 3
-    case 'large': return 6
-    default: return 4
+    case 'small':
+      return 3
+    case 'large':
+      return 6
+    default:
+      return 4
   }
 })
 
@@ -56,8 +62,8 @@ const containerClasses = computed(() => [
   {
     'loading-overlay': props.overlay,
     'loading-centered': props.centered,
-    'loading-inline': !props.centered
-  }
+    'loading-inline': !props.centered,
+  },
 ])
 
 const textClasses = computed(() => [
@@ -65,8 +71,8 @@ const textClasses = computed(() => [
   {
     'text-caption': props.size === 'small',
     'text-body-2': props.size === 'medium',
-    'text-body-1': props.size === 'large'
-  }
+    'text-body-1': props.size === 'large',
+  },
 ])
 </script>
 
@@ -112,7 +118,12 @@ const textClasses = computed(() => [
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 </style>

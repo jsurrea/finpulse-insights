@@ -1,12 +1,7 @@
 <template>
   <div class="empty-state">
     <div class="empty-state-content">
-      <v-icon
-        :icon="computedIcon"
-        :size="iconSize"
-        :color="iconColor"
-        class="empty-icon mb-4"
-      />
+      <v-icon :icon="computedIcon" :size="iconSize" :color="iconColor" class="empty-icon mb-4" />
       <h3 class="text-h6 font-weight-bold mb-2">{{ title }}</h3>
       <p class="text-body-2 text-medium-emphasis mb-6">{{ description }}</p>
 
@@ -49,14 +44,17 @@ const props = withDefaults(defineProps<EmptyStateProps>(), {
   iconColor: 'grey-darken-1',
   size: 'medium',
   actionColor: 'primary',
-  actionVariant: 'elevated'
+  actionVariant: 'elevated',
 })
 
 const iconSize = computed(() => {
   switch (props.size) {
-    case 'small': return 48
-    case 'large': return 80
-    default: return 64
+    case 'small':
+      return 48
+    case 'large':
+      return 80
+    default:
+      return 64
   }
 })
 

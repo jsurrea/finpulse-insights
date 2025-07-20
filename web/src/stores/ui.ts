@@ -4,11 +4,11 @@ import vuetify from '@/plugins/vuetify'
 export const useUI = defineStore('ui', {
   state: () => ({
     dark: localStorage.getItem('theme') === 'dark',
-    sidebar: window.innerWidth >= 768
+    sidebar: window.innerWidth >= 768,
   }),
   actions: {
     toggleDarkMode() {
-      this.dark = !this.dark;
+      this.dark = !this.dark
       vuetify.theme.global.name.value = this.dark ? 'myDark' : 'myLight'
       localStorage.setItem('theme', this.dark ? 'dark' : 'light')
     },
@@ -17,6 +17,6 @@ export const useUI = defineStore('ui', {
     },
     setSidebar(val: boolean) {
       this.sidebar = val
-    }
-  }
+    },
+  },
 })

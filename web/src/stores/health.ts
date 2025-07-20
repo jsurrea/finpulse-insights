@@ -14,7 +14,7 @@ export const useHealth = defineStore('health', {
     healthStatus: null,
     loading: false,
     error: null,
-    lastUpdated: null
+    lastUpdated: null,
   }),
 
   getters: {
@@ -29,7 +29,7 @@ export const useHealth = defineStore('health', {
         return 'critical'
       }
       return 'degraded'
-    }
+    },
   },
 
   actions: {
@@ -53,6 +53,6 @@ export const useHealth = defineStore('health', {
       return setInterval(() => {
         this.fetchHealth()
       }, intervalMs)
-    }
-  }
+    },
+  },
 })

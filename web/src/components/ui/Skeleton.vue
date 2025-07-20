@@ -28,13 +28,13 @@ const props = withDefaults(defineProps<SkeletonProps>(), {
   variant: 'text',
   lines: 1,
   lastLineWidth: 60,
-  animation: 'pulse'
+  animation: 'pulse',
 })
 
 const skeletonClasses = computed(() => [
   'skeleton',
   `skeleton-${props.variant}`,
-  `skeleton-${props.animation}`
+  `skeleton-${props.animation}`,
 ])
 
 const skeletonStyles = computed(() => {
@@ -125,7 +125,8 @@ const skeletonStyles = computed(() => {
 }
 
 @keyframes skeleton-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
