@@ -109,7 +109,7 @@ const stockOptions = computed(() =>
 )
 
 const selectedStockInfo = computed(() =>
-  store.stockOptions.find(s => s.ticker === selectedStock.value)
+  store.selectedStockInfo || store.stockOptions.find(s => s.ticker === selectedStock.value)
 )
 
 const onSearchInput = (searchValue: string) => {
@@ -134,17 +134,24 @@ onMounted(async () => {
   // Set from URL params if present
   if (route.query.ticker) {
     selectedStock.value = route.query.ticker as string
+    store.setSelectedStock(route.query.ticker as string)
   }
 })
 
 // Limpiar el timer de debounce al desmontar
 onUnmounted(() => {
   store.clearDebounceTimer()
+  store.clearSelectedStock()
 })
 
 // Watch for changes in selected stock
-watch(selectedStock, () => {
+watch(selectedStock, (newValue) => {
   error.value = ''
+  if (newValue) {
+    store.setSelectedStock(newValue)
+  } else {
+    store.clearSelectedStock()
+  }
 })
 </script>
 

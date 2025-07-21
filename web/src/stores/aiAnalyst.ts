@@ -6,6 +6,7 @@ interface AIAnalystState {
   currentAnalysis: AIAnalysisResult | null
   analysisHistory: AIAnalysisResult[]
   stockOptions: StockOption[]
+  selectedStockInfo: StockOption | null
   loading: boolean
   loadingSearch: boolean
   error: string | null
@@ -18,6 +19,7 @@ export const useAIAnalyst = defineStore('aiAnalyst', {
     currentAnalysis: null,
     analysisHistory: [],
     stockOptions: [],
+    selectedStockInfo: null,
     loading: false,
     loadingSearch: false,
     error: null,
@@ -56,15 +58,36 @@ export const useAIAnalyst = defineStore('aiAnalyst', {
       try {
         const response = await getStocks(1, 30, search) // Límite de 30 para el autocomplete
 
-        this.stockOptions = response.data?.map((stock) => ({
+        const newOptions = response.data?.map((stock) => ({
           ticker: stock.ticker,
           company: stock.company,
           brokerage: stock.brokerage,
           id: stock.ticker
         })) || []
+
+        // Si hay una selección actual y no está en los nuevos resultados, agregarla
+        if (this.selectedStockInfo && search) {
+          const isSelectedInResults = newOptions.some(option =>
+            option.ticker === this.selectedStockInfo!.ticker
+          )
+
+          if (!isSelectedInResults) {
+            // Agregar la selección actual al inicio de las opciones
+            this.stockOptions = [this.selectedStockInfo, ...newOptions]
+          } else {
+            this.stockOptions = newOptions
+          }
+        } else {
+          this.stockOptions = newOptions
+        }
       } catch (error) {
         console.error('Failed to load stock options:', error)
-        this.stockOptions = []
+        // Preservar la selección actual en caso de error
+        if (this.selectedStockInfo && search) {
+          this.stockOptions = [this.selectedStockInfo]
+        } else if (!search) {
+          this.stockOptions = []
+        }
       } finally {
         this.loadingSearch = false
       }
@@ -171,6 +194,19 @@ export const useAIAnalyst = defineStore('aiAnalyst', {
         clearTimeout(this.debounceTimer)
         this.debounceTimer = null
       }
+    },
+
+    // Establecer información del stock seleccionado
+    setSelectedStock(ticker: string) {
+      const stockInfo = this.stockOptions.find(s => s.ticker === ticker)
+      if (stockInfo) {
+        this.selectedStockInfo = stockInfo
+      }
+    },
+
+    // Limpiar selección
+    clearSelectedStock() {
+      this.selectedStockInfo = null
     }
   }
 })
