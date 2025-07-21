@@ -31,7 +31,7 @@ const chipColor = computed(() => {
   }
 })
 
-const chipVariant = computed(() => 'tonal')
+const chipVariant = computed<"flat" | "text" | "elevated" | "tonal" | "outlined" | "plain" | undefined>(() => 'tonal')
 </script>
 
 <style scoped>

@@ -19,12 +19,11 @@
       </v-card-title>
 
       <v-card-subtitle>
-        Recommendation issued by {{ store.currentRec.brokerage }} on
-        {{ formatDetailDate(store.currentRec.time) }}
+        Recommendation issued because: {{ store.currentRec.reason }}
       </v-card-subtitle>
 
       <v-card-text>
-        <v-row class="mb-6">
+        <v-row class="mb-2">
           <v-col cols="12" md="6" lg="4">
             <InfoItem
               icon="fas fa-building"
@@ -60,9 +59,9 @@
           </v-col>
           <v-col cols="12" md="6" lg="4">
             <InfoItem
-              icon="fas fa-shield-check"
-              label="Confidence"
-              :value="`${(store.currentRec.confidence * 100).toFixed(0)}%`"
+              icon="fas fa-info-circle"
+              label="Recommendation"
+              :value="store.currentRec?.recommendation"
             />
           </v-col>
         </v-row>
@@ -109,10 +108,6 @@ import InfoItem from '@/components/recommendations/InfoItem.vue'
 const route = useRoute()
 const store = useRecommendations()
 const id = route.params.id as string
-
-function formatDetailDate(dateString: string): string {
-  return format(new Date(dateString), 'PPPP')
-}
 
 function formatDetailDateTime(dateString: string): string {
   return format(new Date(dateString), 'PPP p')

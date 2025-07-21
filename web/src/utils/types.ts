@@ -40,6 +40,7 @@ export interface Recommendation {
   time: string
   recommendation: 'BUY' | 'SELL' | 'HOLD'
   confidence: number
+  reason: string
 }
 
 export interface AnalyticsSummary {

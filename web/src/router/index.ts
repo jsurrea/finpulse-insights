@@ -9,8 +9,8 @@ import Health from '@/pages/Health.vue'
 import StockList from '@/pages/stocks/StockList.vue'
 import StockDetail from '@/pages/stocks/StockDetail.vue'
 
-import RecommendationsIndex from '@/pages/Recommendations/Index.vue'
-import RecommendationDetail from '@/pages/Recommendations/_id.vue'
+import RecommendationsIndex from '@/pages/recommendations/RecommendationList.vue'
+import RecommendationDetail from '@/pages/recommendations/RecommendationDetail.vue'
 import AiAnalyst from '@/pages/AiAnalyst.vue'
 
 const routes: RouteRecordRaw[] = [

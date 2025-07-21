@@ -107,6 +107,7 @@ func getStockDetails(c *gin.Context) {
                 "time":         stock.Time.Format(time.RFC3339),
                 "recommendation": stock.Recommendation, 
                 "confidence":   stock.Confidence,      
+                "reason":       stock.Reason,
             },
         },
     })

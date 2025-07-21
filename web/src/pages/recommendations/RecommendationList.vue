@@ -2,7 +2,7 @@
   <section class="recommendations-page">
     <div class="mb-8">
       <h1 class="text-h4 font-weight-bold mb-2">Broker Recommendations</h1>
-      <p class="text-body-2">Browse the latest stock recommendations from top brokerages.</p>
+      <p class="text-medium-emphasis">Browse the latest stock recommendations from top brokerages.</p>
     </div>
 
     <v-card>
@@ -90,8 +90,8 @@ const tableHeaders = [
   { title: 'Ticker', value: 'ticker', width: 100 },
   { title: 'Brokerage', value: 'brokerage' },
   { title: 'Recommendation', value: 'recommendation', width: 140 },
-  { title: 'Confidence', value: 'confidence', align: 'end', width: 100 },
-  { title: 'Date', value: 'time', align: 'end', width: 120 },
+  { title: 'Confidence', value: 'confidence', align: 'end' as const, width: 100 },
+  { title: 'Date', value: 'time', align: 'end' as const, width: 120 },
   { title: '', value: 'actions', width: 60, sortable: false },
 ]
 

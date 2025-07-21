@@ -93,8 +93,18 @@ import { useRouter, useRoute } from 'vue-router'
 import { useDebounceFn } from '@vueuse/core'
 import { useStocks } from '@/stores/stocks'
 
+type RecommendationFilters = {
+  ticker: string
+  company: string
+  brokerage: string
+  action: string
+  date_from: string
+  date_to: string
+  sort: string
+}
+
 const emit = defineEmits<{
-  'filters-changed': [filters: any]
+  'filters-changed': [filters: RecommendationFilters]
 }>()
 
 const stocksStore = useStocks()
