@@ -96,29 +96,6 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
   return res.data
 }
 
-export async function getAnalyticsTrends(): Promise<
-  Array<{
-    date: string
-    confidence: number
-    volume: number
-  }>
-> {
-  const res = await api.get('/analytics/trends')
-  return res.data
-}
-
-export async function getAnalyticsQuarterly(): Promise<
-  Array<{
-    name: string
-    buy: number
-    sell: number
-    hold: number
-  }>
-> {
-  const res = await api.get('/analytics/quarterly')
-  return res.data
-}
-
 // --- HEALTH ---
 
 export async function getHealth(): Promise<HealthStatus> {

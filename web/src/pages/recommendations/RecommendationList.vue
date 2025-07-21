@@ -127,7 +127,11 @@ function formatDate(dateString: string): string {
   return format(new Date(dateString), 'MMM d, yyyy')
 }
 
-function handleFiltersChanged(filters: any) {
+interface RecommendationFiltersType {
+  [key: string]: unknown
+}
+
+function handleFiltersChanged(filters: RecommendationFiltersType) {
   store.applyFilters({ ...filters, page: 1 })
 }
 

@@ -48,7 +48,6 @@ const navItems = [
   { to: '/dashboard', icon: 'fas fa-home', label: 'Dashboard' },
   { to: '/stocks', icon: 'fas fa-newspaper', label: 'Stocks' },
   { to: '/recommendations', icon: 'fas fa-chart-line', label: 'Recommendations' },
-  { to: '/analytics', icon: 'fas fa-chart-bar', label: 'Analytics' },
   { to: '/ai-analyst', icon: 'fas fa-robot', label: 'AI Analyst' },
   { to: '/health', icon: 'fas fa-heart', label: 'Health' },
 ]
