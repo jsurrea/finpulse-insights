@@ -128,11 +128,13 @@ const brokerageOptions = computed(() => [
 
 const actionOptions = [
   { title: 'All Actions', value: '' },
-  { title: 'Upgrade', value: 'upgrade' },
-  { title: 'Downgrade', value: 'downgrade' },
-  { title: 'Initiate', value: 'initiate' },
-  { title: 'Maintain', value: 'maintain' },
-  { title: 'Reiterate', value: 'reiterate' },
+  { title: 'Upgraded', value: 'upgraded by' },
+  { title: 'Downgraded', value: 'downgraded by' },
+  { title: 'Initiated', value: 'initiated by' },
+  { title: 'Reiterated', value: 'reiterated by' },
+  { title: 'Target Raised', value: 'target raised by' },
+  { title: 'Target Lowered', value: 'target lowered by' },
+  { title: 'Target Set', value: 'target set by' },
 ]
 
 const sortOptions = [

@@ -133,10 +133,12 @@ func listRecommendations(c *gin.Context) {
     query := db.Model(&StockRecommendation{})
 
     if ticker != "" {
-        query = query.Where("ticker = ?", ticker)
+        likeTicker := "%" + strings.ToLower(ticker) + "%"
+        query = query.Where("LOWER(ticker) LIKE ?", likeTicker)
     }
     if company != "" {
-        query = query.Where("company = ?", company)
+        likeCompany := "%" + strings.ToLower(company) + "%"
+        query = query.Where("LOWER(company) LIKE ?", likeCompany)
     }
     if brokerage != "" {
         query = query.Where("brokerage = ?", brokerage)
