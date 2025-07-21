@@ -2,7 +2,7 @@
   <section class="ai-analyst-page">
     <div class="mb-8">
       <h1 class="text-h4 font-weight-bold mb-2">AI Financial Analyst</h1>
-      <p class="text-body-2 text-medium-emphasis">
+      <p class="text-medium-emphasis">
         Assess a stock's potential based on recent recommendations and market data.
       </p>
     </div>
@@ -13,10 +13,7 @@
       </v-col>
 
       <v-col cols="12" md="6">
-        <AnalysisResult
-          :loading="store.loading"
-          :analysis="store.currentAnalysis"
-        />
+        <AnalysisResult :loading="store.loading" :analysis="store.currentAnalysis" />
       </v-col>
     </v-row>
 
@@ -24,12 +21,7 @@
     <div v-if="store.analysisHistory.length > 0" class="mt-12">
       <div class="d-flex justify-space-between align-center mb-6">
         <h2 class="text-h5 font-weight-bold">Recent Analyses</h2>
-        <v-btn
-          variant="text"
-          size="small"
-          @click="store.clearHistory"
-          prepend-icon="fas fa-trash"
-        >
+        <v-btn variant="text" size="small" @click="store.clearHistory" prepend-icon="fas fa-trash">
           Clear History
         </v-btn>
       </div>
@@ -38,13 +30,15 @@
         <v-col
           v-for="analysis in store.analysisHistory.slice(0, 6)"
           :key="`${analysis.ticker}-${analysis.timestamp}`"
-          cols="12" sm="6" lg="4"
+          cols="12"
+          sm="6"
+          lg="4"
         >
           <v-card
             variant="outlined"
             class="history-card"
             @click="loadHistoricalAnalysis(analysis)"
-            :class="{ 'active': store.currentAnalysis?.timestamp === analysis.timestamp }"
+            :class="{ active: store.currentAnalysis?.timestamp === analysis.timestamp }"
           >
             <v-card-text class="pa-4">
               <div class="d-flex justify-space-between align-center mb-2">
@@ -71,19 +65,10 @@
     </div>
 
     <!-- Error State -->
-    <v-snackbar
-      v-model="showError"
-      color="error"
-      timeout="5000"
-      location="top"
-    >
+    <v-snackbar v-model="showError" color="error" timeout="5000" location="top">
       {{ store.error }}
       <template #actions>
-        <v-btn
-          variant="text"
-          @click="showError = false"
-          icon="fas fa-times"
-        />
+        <v-btn variant="text" @click="showError = false" icon="fas fa-times" />
       </template>
     </v-snackbar>
   </section>
@@ -112,13 +97,13 @@ const handleAnalysisSubmit = async (formData: AIAnalysisFormData) => {
       query: {
         ...route.query,
         ticker: formData.ticker,
-        company: formData.company
-      }
+        company: formData.company,
+      },
     })
 
     await store.analyzeStock({
       ticker: formData.ticker,
-      company: formData.company
+      company: formData.company,
     })
   } catch (error) {
     showError.value = true
@@ -132,17 +117,21 @@ function loadHistoricalAnalysis(analysis: AIAnalysisResult) {
   router.replace({
     query: {
       ticker: analysis.ticker,
-      company: analysis.company
-    }
+      company: analysis.company,
+    },
   })
 }
 
 function getRecommendationColor(recommendation: string) {
   switch (recommendation) {
-    case 'BUY': return 'success'
-    case 'SELL': return 'error'
-    case 'HOLD': return 'warning'
-    default: return 'primary'
+    case 'BUY':
+      return 'success'
+    case 'SELL':
+      return 'error'
+    case 'HOLD':
+      return 'warning'
+    default:
+      return 'primary'
   }
 }
 
@@ -151,11 +140,14 @@ function formatHistoryDate(timestamp: string): string {
 }
 
 // Watch for errors
-watch(() => store.error, (error) => {
-  if (error) {
-    showError.value = true
-  }
-})
+watch(
+  () => store.error,
+  (error) => {
+    if (error) {
+      showError.value = true
+    }
+  },
+)
 </script>
 
 <style scoped>

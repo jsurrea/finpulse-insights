@@ -20,14 +20,18 @@ const props = defineProps<RecommendationBadgeProps>()
 
 const chipColor = computed(() => {
   switch (props.recommendation) {
-    case 'BUY': return 'success'
-    case 'SELL': return 'error'
-    case 'HOLD': return 'warning'
-    default: return 'primary'
+    case 'BUY':
+      return 'success'
+    case 'SELL':
+      return 'error'
+    case 'HOLD':
+      return 'warning'
+    default:
+      return 'primary'
   }
 })
 
-const chipVariant = computed(() => 'tonal')
+const chipVariant = computed<"flat" | "text" | "elevated" | "tonal" | "outlined" | "plain" | undefined>(() => 'tonal')
 </script>
 
 <style scoped>

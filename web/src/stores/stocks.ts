@@ -28,9 +28,9 @@ export const useStocks = defineStore('stocks', {
       page: 1,
       limit: 20,
       search: '',
-      brokerage: 'all'
+      brokerage: 'all',
     },
-    pagination: null
+    pagination: null,
   }),
   actions: {
     async fetchStocks() {
@@ -41,12 +41,16 @@ export const useStocks = defineStore('stocks', {
           this.filters.page,
           this.filters.limit,
           this.filters.search,
-          this.filters.brokerage
+          this.filters.brokerage,
         )
         this.stocks = data
         this.pagination = pagination
-      } catch (err: any) {
-        this.error = err.message || 'Error fetching stocks'
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          this.error = err.message || 'Error fetching stocks'
+        } else {
+          this.error = 'Error fetching stocks'
+        }
       } finally {
         this.loading = false
       }
@@ -56,8 +60,12 @@ export const useStocks = defineStore('stocks', {
       this.error = null
       try {
         this.currentStock = await getStockDetail(ticker)
-      } catch (err: any) {
-        this.error = err.message || 'Error fetching stock detail'
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          this.error = err.message || 'Error fetching stock detail'
+        } else {
+          this.error = 'Error fetching stock detail'
+        }
       } finally {
         this.loading = false
       }
@@ -65,8 +73,14 @@ export const useStocks = defineStore('stocks', {
     async fetchBrokerages() {
       try {
         const arr = await getTopBrokerages()
-        this.brokerages = arr.map(b => b.name)
-      } catch (err: any) {
+        this.brokerages = arr.map((b) => b.name)
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          this.error = err.message || 'Error fetching brokerages'
+        } else {
+          this.error = 'Error fetching brokerages'
+        }
+        console.error('Brokerages loading error:', err)
         this.brokerages = []
       }
     },
@@ -76,6 +90,6 @@ export const useStocks = defineStore('stocks', {
     },
     clearCurrentStock() {
       this.currentStock = null
-    }
-  }
+    },
+  },
 })

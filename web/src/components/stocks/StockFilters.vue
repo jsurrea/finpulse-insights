@@ -44,13 +44,13 @@ const stocksStore = useStocks()
 const router = useRouter()
 const route = useRoute()
 
-const search = ref(route.query.search as string || '')
-const brokerage = ref(route.query.brokerage as string || 'all')
+const search = ref((route.query.search as string) || '')
+const brokerage = ref((route.query.brokerage as string) || 'all')
 
 const loadingBrokerages = ref(false)
 const brokerageItems = computed(() => [
   { title: 'All Brokerages', value: 'all' },
-  ...stocksStore.brokerages.map(b => ({ title: b, value: b }))
+  ...stocksStore.brokerages.map((b) => ({ title: b, value: b })),
 ])
 
 const updateFilters = useDebounceFn(() => {

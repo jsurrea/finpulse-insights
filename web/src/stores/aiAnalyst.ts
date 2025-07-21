@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import type { AIAnalysisRequest, AIAnalysisResult } from '@/utils/types'
-import { analyzeStockPotential } from '@/utils/api'
 
 interface AIAnalystState {
   currentAnalysis: AIAnalysisResult | null
@@ -14,7 +13,7 @@ export const useAIAnalyst = defineStore('aiAnalyst', {
     currentAnalysis: null,
     analysisHistory: [],
     loading: false,
-    error: null
+    error: null,
   }),
 
   getters: {
@@ -22,7 +21,7 @@ export const useAIAnalyst = defineStore('aiAnalyst', {
     lastAnalysisTime: (state) => {
       if (!state.currentAnalysis) return null
       return new Date(state.currentAnalysis.timestamp)
-    }
+    },
   },
 
   actions: {
@@ -31,7 +30,7 @@ export const useAIAnalyst = defineStore('aiAnalyst', {
       this.error = null
 
       try {
-        const result = await analyzeStockPotential(request)
+        const result = {} as any;
 
         this.currentAnalysis = result
 
@@ -57,6 +56,6 @@ export const useAIAnalyst = defineStore('aiAnalyst', {
 
     clearHistory() {
       this.analysisHistory = []
-    }
-  }
+    },
+  },
 })

@@ -1,8 +1,5 @@
 <template>
-  <aside
-    :class="['app-sidebar', { collapsed: !ui.sidebar }]"
-    aria-label="Sidebar"
-  >
+  <aside :class="['app-sidebar', { collapsed: !ui.sidebar }]" aria-label="Sidebar">
     <div class="sidebar-toggle-row">
       <span class="sidebar-brand" v-if="ui.sidebar">FinPulse</span>
       <v-btn
@@ -27,7 +24,7 @@
         :active="$route.path === item.to"
         rounded="xl"
         class="sidebar-item"
-        :class="{ 'collapsed': !ui.sidebar }"
+        :class="{ collapsed: !ui.sidebar }"
         active-class="bg-primary text-white"
         @click="onNav"
       >
@@ -35,7 +32,9 @@
           <v-icon size="22" color="primary" class="sidebar-icon-center">{{ item.icon }}</v-icon>
         </template>
         <transition name="fade-x">
-          <v-list-item-title v-if="ui.sidebar" class="sidebar-label">{{ item.label }}</v-list-item-title>
+          <v-list-item-title v-if="ui.sidebar" class="sidebar-label">{{
+            item.label
+          }}</v-list-item-title>
         </transition>
       </v-list-item>
     </v-list>
@@ -49,11 +48,12 @@ const navItems = [
   { to: '/dashboard', icon: 'fas fa-home', label: 'Dashboard' },
   { to: '/stocks', icon: 'fas fa-newspaper', label: 'Stocks' },
   { to: '/recommendations', icon: 'fas fa-chart-line', label: 'Recommendations' },
-  { to: '/analytics', icon: 'fas fa-chart-bar', label: 'Analytics' },
   { to: '/ai-analyst', icon: 'fas fa-robot', label: 'AI Analyst' },
-  { to: '/health', icon: 'fas fa-heart', label: 'Health' }
+  { to: '/health', icon: 'fas fa-heart', label: 'Health' },
 ]
-function onNav() { if (window.innerWidth < 768) ui.setSidebar(false) }
+function onNav() {
+  if (window.innerWidth < 768) ui.setSidebar(false)
+}
 </script>
 
 <style scoped>
@@ -63,7 +63,9 @@ function onNav() { if (window.innerWidth < 768) ui.setSidebar(false) }
   min-width: 56px;
   background: var(--v-theme-surface);
   border-right: 3px solid var(--v-theme-primary);
-  transition: width .24s cubic-bezier(.4,0,.2,1), background .2s;
+  transition:
+    width 0.24s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -77,7 +79,7 @@ function onNav() { if (window.innerWidth < 768) ui.setSidebar(false) }
   align-items: center;
   height: 72px;
   padding: 0 16px;
-  border-bottom: 1px solid var(--v-theme-outline, #E5E7EB);
+  border-bottom: 1px solid var(--v-theme-outline, #e5e7eb);
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 700;
   font-size: 1.15rem;
@@ -94,9 +96,10 @@ function onNav() { if (window.innerWidth < 768) ui.setSidebar(false) }
 }
 .sidebar-menu {
   padding-top: 10px;
+  flex-grow: 1;
 }
 .sidebar-label {
-  margin-left: 10px;
+  margin-left: 0px;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.05rem;
   font-weight: 500;
@@ -111,17 +114,21 @@ function onNav() { if (window.innerWidth < 768) ui.setSidebar(false) }
   margin-bottom: 8px;
   display: flex;
   align-items: center;
-  transition: background .15s, color .15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 .sidebar-item.v-list-item--active,
 .sidebar-item:hover {
-  background: rgba(var(--v-theme-primary-rgb),0.13) !important;
+  background: rgba(var(--v-theme-primary-rgb), 0.13) !important;
   color: var(--v-theme-primary) !important;
 }
-.fade-x-enter-active, .fade-x-leave-active {
-  transition: opacity 0.21s cubic-bezier(.4,0,.2,1);
+.fade-x-enter-active,
+.fade-x-leave-active {
+  transition: opacity 0.21s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.fade-x-enter-from, .fade-x-leave-to {
+.fade-x-enter-from,
+.fade-x-leave-to {
   opacity: 0;
 }
 </style>

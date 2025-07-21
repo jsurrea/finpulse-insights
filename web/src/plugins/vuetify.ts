@@ -15,8 +15,8 @@ const myLight = {
     error: '#B00020',
     onPrimary: '#FFFFFF',
     neutral: '#6B7280',
-    text: '#333333'
-  }
+    text: '#333333',
+  },
 }
 
 // Paleta personalizada DARK
@@ -32,19 +32,19 @@ const myDark = {
     error: '#fff1f1',
     onPrimary: '#23272f',
     neutral: '#AAB0BB',
-    text: '#F8F9FC'
-  }
+    text: '#F8F9FC',
+  },
 }
 
 export default createVuetify({
   theme: {
     defaultTheme: 'myLight',
-    themes: { myLight, myDark }
+    themes: { myLight, myDark },
   },
   icons: {
     defaultSet: 'fa',
     aliases,
-    sets: { fa }
+    sets: { fa },
   },
   defaults: {
     global: {
@@ -52,5 +52,5 @@ export default createVuetify({
         fontFamily: 'Inter, system-ui, sans-serif',
       },
     },
-  }
+  },
 })

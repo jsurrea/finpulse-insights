@@ -1,5 +1,5 @@
 <template>
-  <div class="header-left d-flex align-center pl-6 pr-4" style="height: 100%;">
+  <div class="header-left d-flex align-center pl-6 pr-4" style="height: 100%">
     <v-icon color="primary" size="28">fas fa-chart-line</v-icon>
   </div>
 </template>

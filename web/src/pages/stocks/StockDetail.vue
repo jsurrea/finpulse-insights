@@ -1,11 +1,7 @@
 <template>
   <div class="stock-detail-page">
     <div class="mb-4">
-      <v-btn
-        variant="outlined"
-        :to="'/stocks'"
-        prepend-icon="fas fa-arrow-left"
-      >
+      <v-btn variant="outlined" :to="'/stocks'" prepend-icon="fas fa-arrow-left">
         Back to Stocks
       </v-btn>
     </div>
@@ -69,9 +65,7 @@
       <v-col cols="12" md="8">
         <v-card elevation="2">
           <v-card-title>Recommendation History</v-card-title>
-          <v-card-subtitle>
-            Recent analyst actions for {{ stock.ticker }}
-          </v-card-subtitle>
+          <v-card-subtitle> Recent analyst actions for {{ stock.ticker }} </v-card-subtitle>
           <v-card-text>
             <v-table density="compact">
               <thead>
@@ -80,7 +74,7 @@
                   <th class="text-left font-weight-bold">Brokerage</th>
                   <th class="text-left font-weight-bold">Action</th>
                   <th class="text-left font-weight-bold">Recommendation</th>
-                  <th class="text-center" style="width: 50px;"></th>
+                  <th class="text-center" style="width: 50px"></th>
                 </tr>
               </thead>
               <tbody>
@@ -134,13 +128,7 @@
     </div>
 
     <!-- Error State -->
-    <v-alert
-      v-if="error"
-      type="error"
-      class="mt-4"
-      :text="error"
-      dismissible
-    />
+    <v-alert v-if="error" type="error" class="mt-4" :text="error" dismissible />
   </div>
 </template>
 
@@ -167,9 +155,12 @@ const loadStockDetail = async () => {
 
     await stocksStore.fetchStockDetail(ticker)
     stock.value = stocksStore.currentStock
-
-  } catch (err: any) {
-    error.value = err.message || 'Error loading stock detail'
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      error.value = err.message
+    } else {
+      error.value = 'Error loading stock detail'
+    }
     console.error('Stock detail error:', err)
   } finally {
     loading.value = false

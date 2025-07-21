@@ -11,7 +11,7 @@ export const aiAnalysisSchema = yup.object({
     .string()
     .required('Company name is required')
     .min(2, 'Company name is too short')
-    .max(100, 'Company name is too long')
+    .max(100, 'Company name is too long'),
 })
 
 export type AIAnalysisFormData = yup.InferType<typeof aiAnalysisSchema>

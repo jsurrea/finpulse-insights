@@ -72,8 +72,8 @@ const { handleSubmit, errors, validateField, setFieldValue, meta } = useForm<AIA
   validationSchema: toTypedSchema(aiAnalysisSchema),
   initialValues: {
     ticker: (route.query.ticker as string) || '',
-    company: (route.query.company as string) || ''
-  }
+    company: (route.query.company as string) || '',
+  },
 })
 
 const ticker = ref((route.query.ticker as string) || '')

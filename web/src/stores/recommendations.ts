@@ -31,9 +31,9 @@ export const useRecommendations = defineStore('recommendations', {
     filters: {
       page: 1,
       limit: 20,
-      sort: 'time:desc'
+      sort: 'time:desc',
     },
-    pagination: null
+    pagination: null,
   }),
   actions: {
     async fetchRecommendations() {
@@ -50,7 +50,7 @@ export const useRecommendations = defineStore('recommendations', {
           this.filters.rating,
           this.filters.date_from,
           this.filters.date_to,
-          this.filters.sort
+          this.filters.sort,
         )
         this.recommendations = data
         this.pagination = pagination
@@ -77,6 +77,6 @@ export const useRecommendations = defineStore('recommendations', {
     },
     clearCurrent() {
       this.currentRec = null
-    }
-  }
+    },
+  },
 })

@@ -17,6 +17,8 @@ type StockRecommendation struct {
     RatingFrom  string    `json:"rating_from"`
     RatingTo    string    `json:"rating_to"`
     Time        time.Time `gorm:"not null" json:"time"`
+
+    // Calculated fields
     Score       int       `json:"score"`          // Optional: for recommendation algorithm
     Recommendation string  `json:"recommendation"` // BUY/SELL/HOLD
     Confidence  float64   `json:"confidence"`     // 0.0 to 1.0

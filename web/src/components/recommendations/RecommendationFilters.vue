@@ -93,37 +93,48 @@ import { useRouter, useRoute } from 'vue-router'
 import { useDebounceFn } from '@vueuse/core'
 import { useStocks } from '@/stores/stocks'
 
+type RecommendationFilters = {
+  ticker: string
+  company: string
+  brokerage: string
+  action: string
+  date_from: string
+  date_to: string
+  sort: string
+}
 
 const emit = defineEmits<{
-  'filters-changed': [filters: any]
+  'filters-changed': [filters: RecommendationFilters]
 }>()
 
 const stocksStore = useStocks()
 const router = useRouter()
 const route = useRoute()
 
-const ticker = ref(route.query.ticker as string || '')
-const company = ref(route.query.company as string || '')
-const brokerage = ref(route.query.brokerage as string || '')
-const action = ref(route.query.action as string || '')
-const dateFrom = ref(route.query.date_from as string || '')
-const dateTo = ref(route.query.date_to as string || '')
-const sort = ref(route.query.sort as string || 'time:desc')
+const ticker = ref((route.query.ticker as string) || '')
+const company = ref((route.query.company as string) || '')
+const brokerage = ref((route.query.brokerage as string) || '')
+const action = ref((route.query.action as string) || '')
+const dateFrom = ref((route.query.date_from as string) || '')
+const dateTo = ref((route.query.date_to as string) || '')
+const sort = ref((route.query.sort as string) || 'time:desc')
 
 const loadingBrokerages = ref(false)
 
 const brokerageOptions = computed(() => [
   { title: 'All Brokerages', value: '' },
-  ...stocksStore.brokerages.map(b => ({ title: b, value: b }))
+  ...stocksStore.brokerages.map((b) => ({ title: b, value: b })),
 ])
 
 const actionOptions = [
   { title: 'All Actions', value: '' },
-  { title: 'Upgrade', value: 'upgrade' },
-  { title: 'Downgrade', value: 'downgrade' },
-  { title: 'Initiate', value: 'initiate' },
-  { title: 'Maintain', value: 'maintain' },
-  { title: 'Reiterate', value: 'reiterate' }
+  { title: 'Upgraded', value: 'upgraded by' },
+  { title: 'Downgraded', value: 'downgraded by' },
+  { title: 'Initiated', value: 'initiated by' },
+  { title: 'Reiterated', value: 'reiterated by' },
+  { title: 'Target Raised', value: 'target raised by' },
+  { title: 'Target Lowered', value: 'target lowered by' },
+  { title: 'Target Set', value: 'target set by' },
 ]
 
 const sortOptions = [
@@ -132,7 +143,7 @@ const sortOptions = [
   { title: 'Ticker (A-Z)', value: 'ticker:asc' },
   { title: 'Ticker (Z-A)', value: 'ticker:desc' },
   { title: 'Confidence (High)', value: 'confidence:desc' },
-  { title: 'Confidence (Low)', value: 'confidence:asc' }
+  { title: 'Confidence (Low)', value: 'confidence:asc' },
 ]
 
 const updateFilters = useDebounceFn(() => {
@@ -155,7 +166,7 @@ const updateFilters = useDebounceFn(() => {
     action: action.value,
     date_from: dateFrom.value,
     date_to: dateTo.value,
-    sort: sort.value
+    sort: sort.value,
   })
 }, 500)
 

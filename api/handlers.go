@@ -89,10 +89,30 @@ func getStockDetails(c *gin.Context) {
             "rating_to":   stock.RatingTo,
             "target_from": stock.TargetFrom,
             "target_to":   stock.TargetTo,
-            "time":        stock.Time,
+            "time":        stock.Time.Format(time.RFC3339),
+        },
+
+        // Use the unique record as the "history" of an item
+        "history": []gin.H{
+            {
+                "id":           stock.ID.String(), 
+                "ticker":       stock.Ticker,
+                "company":      stock.Company,
+                "brokerage":    stock.Brokerage,
+                "action":       stock.Action,
+                "rating_from":  stock.RatingFrom,
+                "rating_to":    stock.RatingTo,
+                "target_from":  stock.TargetFrom,
+                "target_to":    stock.TargetTo,
+                "time":         stock.Time.Format(time.RFC3339),
+                "recommendation": stock.Recommendation, 
+                "confidence":   stock.Confidence,      
+                "reason":       stock.Reason,
+            },
         },
     })
 }
+
 
 func listRecommendations(c *gin.Context) {
     page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
@@ -113,10 +133,12 @@ func listRecommendations(c *gin.Context) {
     query := db.Model(&StockRecommendation{})
 
     if ticker != "" {
-        query = query.Where("ticker = ?", ticker)
+        likeTicker := "%" + strings.ToLower(ticker) + "%"
+        query = query.Where("LOWER(ticker) LIKE ?", likeTicker)
     }
     if company != "" {
-        query = query.Where("company = ?", company)
+        likeCompany := "%" + strings.ToLower(company) + "%"
+        query = query.Where("LOWER(company) LIKE ?", likeCompany)
     }
     if brokerage != "" {
         query = query.Where("brokerage = ?", brokerage)
@@ -253,6 +275,32 @@ func healthCheck(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{
         "status":   "ok",
         "database": "connected",
-        "uptime":   time.Now().Unix(),
+        "uptime":   time.Since(startTime).Seconds(),
     })
 }
+
+func validateMigration(c *gin.Context) {
+    var stats struct {
+        Total           int64   `json:"total"`
+        BuyCount        int64   `json:"buy_count"`
+        SellCount       int64   `json:"sell_count"`
+        HoldCount       int64   `json:"hold_count"`
+        AvgConfidence   float64 `json:"avg_confidence"`
+        EmptyRecs       int64   `json:"empty_recommendations"`
+        ZeroConfidence  int64   `json:"zero_confidence"`
+    }
+    
+    db.Model(&StockRecommendation{}).Count(&stats.Total)
+    db.Model(&StockRecommendation{}).Where("recommendation = 'BUY'").Count(&stats.BuyCount)
+    db.Model(&StockRecommendation{}).Where("recommendation = 'SELL'").Count(&stats.SellCount)
+    db.Model(&StockRecommendation{}).Where("recommendation = 'HOLD'").Count(&stats.HoldCount)
+    db.Model(&StockRecommendation{}).Where("recommendation = '' OR recommendation IS NULL").Count(&stats.EmptyRecs)
+    db.Model(&StockRecommendation{}).Where("confidence = 0").Count(&stats.ZeroConfidence)
+    db.Model(&StockRecommendation{}).Select("AVG(confidence)").Scan(&stats.AvgConfidence)
+    
+    c.JSON(http.StatusOK, gin.H{
+        "migration_stats": stats,
+        "status": "validation_complete",
+    })
+}
+

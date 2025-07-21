@@ -2,19 +2,12 @@
   <v-card class="h-100 status-card">
     <v-card-title class="d-flex justify-space-between align-center pa-4 pb-2">
       <span class="text-sm font-medium">{{ title }}</span>
-      <v-icon
-        :icon="icon"
-        :color="iconColor"
-        size="20"
-      />
+      <v-icon :icon="icon" :color="iconColor" size="20" />
     </v-card-title>
     <v-card-text class="pa-4 pt-0">
       <div
-        :class="[
-          'text-2xl font-weight-bold text-uppercase mb-2',
-          statusTextClass
-        ]"
-        style="font-family: 'Inter', system-ui, sans-serif;"
+        :class="['text-2xl font-weight-bold text-uppercase mb-2', statusTextClass]"
+        style="font-family: 'Inter', system-ui, sans-serif"
       >
         {{ value }}
       </div>

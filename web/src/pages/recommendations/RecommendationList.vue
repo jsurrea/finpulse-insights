@@ -1,22 +1,18 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <section class="recommendations-page">
     <div class="mb-8">
       <h1 class="text-h4 font-weight-bold mb-2">Broker Recommendations</h1>
-      <p class="text-body-2">
-        Browse the latest stock recommendations from top brokerages.
-      </p>
+      <p class="text-medium-emphasis">Browse the latest stock recommendations from top brokerages.</p>
     </div>
 
-    <v-card>
+    <v-card class="px-4 mb-6">
       <v-card-title class="pb-0">Latest Recommendations</v-card-title>
       <v-card-subtitle v-if="store.pagination">
         Page {{ store.pagination.page }} of {{ totalPages }}
       </v-card-subtitle>
 
-      <RecommendationFilters
-        :loading="store.loading"
-        @filters-changed="handleFiltersChanged"
-      />
+      <RecommendationFilters :loading="store.loading" @filters-changed="handleFiltersChanged" />
 
       <v-card-text>
         <v-data-table
@@ -27,10 +23,18 @@
           density="comfortable"
           no-data-text="No recommendations found"
           loading-text="Loading recommendations..."
+          :items-per-page="-1"
+          hide-default-footer
         >
-          <template #item.ticker="{ item }">
+          <template v-slot:item.ticker="{ item }">
             <RouterLink :to="`/stocks/${item.ticker}`" class="ticker-link font-mono">
               {{ item.ticker }}
+            </RouterLink>
+          </template>
+
+          <template v-slot:item.company="{ item }">
+            <RouterLink :to="`/stocks/${item.ticker}`" class="font-weight-medium">
+              {{ item.company }}
             </RouterLink>
           </template>
 
@@ -59,11 +63,7 @@
 
     <!-- Pagination Controls -->
     <div class="d-flex justify-space-between align-center mt-6">
-      <v-btn
-        variant="outlined"
-        :disabled="store.filters.page === 1"
-        @click="changePage(-1)"
-      >
+      <v-btn variant="outlined" :disabled="store.filters.page === 1" @click="changePage(-1)">
         Previous
       </v-btn>
 
@@ -71,13 +71,7 @@
         Showing {{ showingStart }} - {{ showingEnd }} of {{ store.pagination?.total || 0 }}
       </span>
 
-      <v-btn
-        variant="outlined"
-        :disabled="!canGoNext"
-        @click="changePage(1)"
-      >
-        Next
-      </v-btn>
+      <v-btn variant="outlined" :disabled="!canGoNext" @click="changePage(1)"> Next </v-btn>
     </div>
 
     <!-- Error State -->
@@ -103,38 +97,41 @@ const store = useRecommendations()
 
 const tableHeaders = [
   { title: 'Ticker', value: 'ticker', width: 100 },
+  { title: 'Company', value: 'company' },
   { title: 'Brokerage', value: 'brokerage' },
   { title: 'Recommendation', value: 'recommendation', width: 140 },
-  { title: 'Confidence', value: 'confidence', align: 'end', width: 100 },
-  { title: 'Date', value: 'time', align: 'end', width: 120 },
-  { title: '', value: 'actions', width: 60, sortable: false }
+  { title: 'Confidence', value: 'confidence', align: 'end' as const, width: 100 },
+  { title: 'Date', value: 'time', align: 'end' as const, width: 120 },
+  { title: '', value: 'actions', width: 60, sortable: false },
 ]
 
 const totalPages = computed(() =>
-  store.pagination ? Math.ceil(store.pagination.total / store.pagination.limit) : 1
+  store.pagination ? Math.ceil(store.pagination.total / store.pagination.limit) : 1,
 )
 
 const showingStart = computed(() =>
-  store.pagination ? ((store.pagination.page - 1) * store.pagination.limit) + 1 : 0
+  store.pagination ? (store.pagination.page - 1) * store.pagination.limit + 1 : 0,
 )
 
 const showingEnd = computed(() =>
   store.pagination
     ? Math.min(store.pagination.page * store.pagination.limit, store.pagination.total)
-    : 0
+    : 0,
 )
 
 const canGoNext = computed(() =>
-  store.pagination
-    ? store.filters.page * store.filters.limit < store.pagination.total
-    : false
+  store.pagination ? store.filters.page * store.filters.limit < store.pagination.total : false,
 )
 
 function formatDate(dateString: string): string {
   return format(new Date(dateString), 'MMM d, yyyy')
 }
 
-function handleFiltersChanged(filters: any) {
+interface RecommendationFiltersType {
+  [key: string]: unknown
+}
+
+function handleFiltersChanged(filters: RecommendationFiltersType) {
   store.applyFilters({ ...filters, page: 1 })
 }
 
