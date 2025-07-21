@@ -2,12 +2,12 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 import AppLayout from '@/layouts/AppLayout.vue'
 
-import Dashboard from '@/pages/Dashboard.vue'
+import Dashboard from '@/pages/dashboard/DashboardPage.vue'
 import Analytics from '@/pages/Analytics.vue'
 import Health from '@/pages/Health.vue'
 
-import StocksIndex from '@/pages/Stocks/Index.vue'
-import StockDetail from '@/pages/Stocks/_ticker.vue'
+import StockList from '@/pages/stocks/StockList.vue'
+import StockDetail from '@/pages/stocks/_ticker.vue'
 
 import RecommendationsIndex from '@/pages/Recommendations/Index.vue'
 import RecommendationDetail from '@/pages/Recommendations/_id.vue'
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'stocks',
         children: [
-          { path: '', name: 'stocks', component: StocksIndex },
+          { path: '', name: 'stocks', component: StockList },
           { path: ':ticker', name: 'stock-detail', component: StockDetail, props: true },
         ],
       },

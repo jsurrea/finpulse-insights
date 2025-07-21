@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-page">
     <div class="mb-8">
-      <h1 class="text-3xl font-weight-bold tracking-tight dashboard-title">Dashboard</h1>
+      <h1 class="text-3xl font-weight-bold tracking-tight">Dashboard</h1>
     </div>
 
     <!-- KPI Cards Grid -->
@@ -25,7 +25,7 @@
           <KpiCard
             title="Avg. Confidence"
             :value="summary?.average_confidence?.toFixed(2) || 0"
-            icon="fas fa-shield-check"
+            icon="fas fa-star"
           />
         </v-col>
         <v-col cols="12" sm="6" lg="3">
@@ -83,8 +83,12 @@ const loadDashboardData = async () => {
     // Load top brokerages
     await analytics.fetchTopBrokerages()
     topBrokerages.value = analytics.topBrokerages
-  } catch (err: any) {
-    error.value = err.message || 'Error loading dashboard data'
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      error.value = err.message
+    } else {
+      error.value = 'Error loading dashboard data'
+    }
     console.error('Dashboard error:', err)
   } finally {
     loading.value = false
@@ -100,11 +104,5 @@ onMounted(() => {
 .dashboard-page {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.dashboard-title {
-  font-family: 'Inter', system-ui, sans-serif;
-  color: var(--v-theme-on-surface);
-  letter-spacing: -0.025em;
 }
 </style>

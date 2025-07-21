@@ -45,8 +45,12 @@ export const useStocks = defineStore('stocks', {
         )
         this.stocks = data
         this.pagination = pagination
-      } catch (err: any) {
-        this.error = err.message || 'Error fetching stocks'
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          this.error = err.message || 'Error fetching stocks'
+        } else {
+          this.error = 'Error fetching stocks'
+        }
       } finally {
         this.loading = false
       }
@@ -56,8 +60,12 @@ export const useStocks = defineStore('stocks', {
       this.error = null
       try {
         this.currentStock = await getStockDetail(ticker)
-      } catch (err: any) {
-        this.error = err.message || 'Error fetching stock detail'
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          this.error = err.message || 'Error fetching stock detail'
+        } else {
+          this.error = 'Error fetching stock detail'
+        }
       } finally {
         this.loading = false
       }
@@ -66,7 +74,13 @@ export const useStocks = defineStore('stocks', {
       try {
         const arr = await getTopBrokerages()
         this.brokerages = arr.map((b) => b.name)
-      } catch (err: any) {
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          this.error = err.message || 'Error fetching brokerages'
+        } else {
+          this.error = 'Error fetching brokerages'
+        }
+        console.error('Brokerages loading error:', err)
         this.brokerages = []
       }
     },

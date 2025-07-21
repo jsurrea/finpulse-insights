@@ -26,7 +26,12 @@ export async function getStocks(
   search = '',
   brokerage = 'all',
 ): Promise<{ data: Stock[]; pagination: Pagination }> {
-  const params: any = {
+  const params: {
+    page: number
+    limit: number
+    search?: string
+    brokerage?: string
+  } = {
     page,
     limit,
   }
@@ -55,7 +60,18 @@ export async function getRecommendations(
   date_to?: string,
   sort: string = 'time:desc',
 ): Promise<{ data: Recommendation[]; pagination: Pagination }> {
-  const params: any = { page, limit, sort }
+  const params: {
+    page: number
+    limit: number
+    sort: string
+    ticker?: string
+    company?: string
+    brokerage?: string
+    action?: string
+    rating?: string
+    date_from?: string
+    date_to?: string
+  } = { page, limit, sort }
   if (ticker) params.ticker = ticker
   if (company) params.company = company
   if (brokerage) params.brokerage = brokerage
