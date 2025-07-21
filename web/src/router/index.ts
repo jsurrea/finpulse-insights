@@ -10,7 +10,7 @@ import StockDetail from '@/pages/stocks/StockDetail.vue'
 
 import RecommendationsIndex from '@/pages/recommendations/RecommendationList.vue'
 import RecommendationDetail from '@/pages/recommendations/RecommendationDetail.vue'
-import AiAnalyst from '@/pages/AiAnalyst.vue'
+import AiAnalyst from '@/pages/ai-analyst/AiAnalyst.vue'
 
 const routes: RouteRecordRaw[] = [
   {

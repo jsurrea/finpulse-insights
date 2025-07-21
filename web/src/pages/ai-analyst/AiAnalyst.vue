@@ -2,7 +2,7 @@
   <section class="ai-analyst-page">
     <div class="mb-8">
       <h1 class="text-h4 font-weight-bold mb-2">AI Financial Analyst</h1>
-      <p class="text-body-2 text-medium-emphasis">
+      <p class="text-medium-emphasis">
         Assess a stock's potential based on recent recommendations and market data.
       </p>
     </div>
