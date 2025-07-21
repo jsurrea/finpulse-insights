@@ -275,7 +275,7 @@ func healthCheck(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{
         "status":   "ok",
         "database": "connected",
-        "uptime":   time.Now().Unix(),
+        "uptime":   time.Since(startTime).Seconds(),
     })
 }
 

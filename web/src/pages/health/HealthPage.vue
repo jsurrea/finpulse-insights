@@ -4,7 +4,7 @@
       <div class="d-flex justify-space-between align-center mb-2">
         <div>
           <h1 class="text-h4 font-weight-bold mb-1">System Health</h1>
-          <p class="text-body-2 text-medium-emphasis">Real-time status of the FinPulse API.</p>
+          <p class="text-medium-emphasis">Real-time status of the FinPulse API.</p>
         </div>
         <div class="d-flex align-center ga-2">
           <v-chip
@@ -41,7 +41,7 @@
           title="API Status"
           :value="store.healthStatus.status"
           description="Main API endpoint health"
-          :status="store.healthStatus.status"
+          :status="mapStatus(store.healthStatus.status)"
           icon="fas fa-check-circle"
         />
       </v-col>
@@ -66,55 +66,6 @@
         />
       </v-col>
     </v-row>
-
-    <!-- System Overview Card -->
-    <v-card v-if="store.healthStatus" class="mt-6">
-      <v-card-title class="pa-4">
-        <span class="text-lg font-weight-bold">System Overview</span>
-      </v-card-title>
-      <v-card-text class="pa-4">
-        <v-row>
-          <v-col cols="12" sm="6" md="3">
-            <div class="text-center">
-              <v-icon :color="store.isHealthy ? 'success' : 'error'" size="32" class="mb-2">
-                {{ store.isHealthy ? 'fas fa-heart' : 'fas fa-heart-broken' }}
-              </v-icon>
-              <div class="text-body-2 font-weight-medium">
-                {{ store.isHealthy ? 'Healthy' : 'Issues Detected' }}
-              </div>
-            </div>
-          </v-col>
-          <v-col cols="12" sm="6" md="3">
-            <div class="text-center">
-              <v-icon
-                :color="store.isDatabaseConnected ? 'primary' : 'error'"
-                size="32"
-                class="mb-2"
-              >
-                fas fa-database
-              </v-icon>
-              <div class="text-body-2 font-weight-medium">
-                Database {{ store.isDatabaseConnected ? 'Online' : 'Offline' }}
-              </div>
-            </div>
-          </v-col>
-          <v-col cols="12" sm="6" md="3">
-            <div class="text-center">
-              <v-icon color="info" size="32" class="mb-2"> fas fa-clock </v-icon>
-              <div class="text-body-2 font-weight-medium">
-                {{ formatUptimeDetailed(store.healthStatus.uptime) }}
-              </div>
-            </div>
-          </v-col>
-          <v-col cols="12" sm="6" md="3">
-            <div class="text-center">
-              <v-icon color="success" size="32" class="mb-2"> fas fa-shield-check </v-icon>
-              <div class="text-body-2 font-weight-medium">Monitoring Active</div>
-            </div>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
 
     <!-- Loading State -->
     <div v-if="store.loading && !store.healthStatus" class="d-flex justify-center py-12">
@@ -152,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useHealth } from '@/stores/health'
 import { formatDistanceToNowStrict, format } from 'date-fns'
 import StatusCard from '@/components/health/StatusCard.vue'
@@ -203,27 +154,23 @@ const systemStatusText = computed(() => {
   }
 })
 
+onMounted(() => {
+  store.fetchHealth()
+})
+
 function formatUptime(seconds: number): string {
   const now = Date.now()
   const startTime = now - seconds * 1000
   return formatDistanceToNowStrict(startTime, { addSuffix: true })
 }
 
-function formatUptimeDetailed(seconds: number): string {
-  const hours = Math.floor(seconds / 3600)
-  const days = Math.floor(hours / 24)
-
-  if (days > 0) {
-    return `${days}d ${hours % 24}h uptime`
-  } else if (hours > 0) {
-    return `${hours}h ${Math.floor((seconds % 3600) / 60)}m uptime`
-  } else {
-    return `${Math.floor(seconds / 60)}m uptime`
-  }
-}
-
 function formatLastUpdated(date: Date): string {
   return format(date, 'MMM d, yyyy HH:mm:ss')
+}
+
+function mapStatus(status: 'error' | 'ok' | 'degraded'): 'error' | 'info' | 'ok' | 'connected' | 'disconnected' {
+  if (status === 'degraded') return 'info'
+  return status
 }
 </script>
 

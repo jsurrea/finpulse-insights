@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import AppLayout from '@/layouts/AppLayout.vue'
 
 import Dashboard from '@/pages/dashboard/DashboardPage.vue'
-import Health from '@/pages/Health.vue'
+import Health from '@/pages/health/HealthPage.vue'
 
 import StockList from '@/pages/stocks/StockList.vue'
 import StockDetail from '@/pages/stocks/StockDetail.vue'

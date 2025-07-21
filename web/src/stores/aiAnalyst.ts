@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import type { AIAnalysisRequest, AIAnalysisResult } from '@/utils/types'
-import { analyzeStockPotential } from '@/utils/api'
 
 interface AIAnalystState {
   currentAnalysis: AIAnalysisResult | null
@@ -31,7 +30,7 @@ export const useAIAnalyst = defineStore('aiAnalyst', {
       this.error = null
 
       try {
-        const result = await analyzeStockPotential(request)
+        const result = {} as any;
 
         this.currentAnalysis = result
 

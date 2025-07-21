@@ -9,6 +9,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Variable global para almacenar el tiempo de inicio de la aplicación
+var startTime = time.Now()
+
 func main() {
     
     port := os.Getenv("PORT")
