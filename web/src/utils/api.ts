@@ -109,10 +109,3 @@ export async function getTopBrokerages(): Promise<BrokerageSummary[]> {
   const res = await api.get('/analytics/brokerages')
   return res.data as BrokerageSummary[]
 }
-
-// --- AI ANALYST ---
-
-export async function analyzeStockPotential(ticker: string): Promise<any> {
-  const res = await api.get(`/ai-analyst/analyze?ticker=${encodeURIComponent(ticker)}`)
-  return res.data
-}

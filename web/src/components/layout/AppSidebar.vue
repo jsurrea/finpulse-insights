@@ -99,7 +99,7 @@ function onNav() {
   flex-grow: 1;
 }
 .sidebar-label {
-  margin-left: 10px;
+  margin-left: 0px;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1.05rem;
   font-weight: 500;
