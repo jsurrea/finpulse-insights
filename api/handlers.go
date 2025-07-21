@@ -256,3 +256,29 @@ func healthCheck(c *gin.Context) {
         "uptime":   time.Now().Unix(),
     })
 }
+
+func validateMigration(c *gin.Context) {
+    var stats struct {
+        Total           int64   `json:"total"`
+        BuyCount        int64   `json:"buy_count"`
+        SellCount       int64   `json:"sell_count"`
+        HoldCount       int64   `json:"hold_count"`
+        AvgConfidence   float64 `json:"avg_confidence"`
+        EmptyRecs       int64   `json:"empty_recommendations"`
+        ZeroConfidence  int64   `json:"zero_confidence"`
+    }
+    
+    db.Model(&StockRecommendation{}).Count(&stats.Total)
+    db.Model(&StockRecommendation{}).Where("recommendation = 'BUY'").Count(&stats.BuyCount)
+    db.Model(&StockRecommendation{}).Where("recommendation = 'SELL'").Count(&stats.SellCount)
+    db.Model(&StockRecommendation{}).Where("recommendation = 'HOLD'").Count(&stats.HoldCount)
+    db.Model(&StockRecommendation{}).Where("recommendation = '' OR recommendation IS NULL").Count(&stats.EmptyRecs)
+    db.Model(&StockRecommendation{}).Where("confidence = 0").Count(&stats.ZeroConfidence)
+    db.Model(&StockRecommendation{}).Select("AVG(confidence)").Scan(&stats.AvgConfidence)
+    
+    c.JSON(http.StatusOK, gin.H{
+        "migration_stats": stats,
+        "status": "validation_complete",
+    })
+}
+
