@@ -8,5 +8,15 @@ CREATE TABLE IF NOT EXISTS stock_recommendations (
     target_to DECIMAL(12,2),
     rating_from STRING,
     rating_to STRING,
-    time TIMESTAMP NOT NULL
+    time TIMESTAMP NOT NULL,
+
+    -- Nuevos campos para la recomendación calculada
+    recommendation STRING NOT NULL DEFAULT 'HOLD',   -- BUY/SELL/HOLD
+    confidence FLOAT8 NOT NULL DEFAULT 0.5,          -- 0.0 - 1.0
+    score INT NOT NULL DEFAULT 0,                    -- Score numérico
+    reason STRING NOT NULL DEFAULT ''                -- Explicación textual
 );
+
+CREATE INDEX IF NOT EXISTS recommendations_ticker_time_idx ON stock_recommendations (ticker, time DESC);
+CREATE INDEX IF NOT EXISTS recommendations_recommendation_idx ON stock_recommendations (recommendation);
+CREATE INDEX IF NOT EXISTS recommendations_brokerage_idx ON stock_recommendations (brokerage);

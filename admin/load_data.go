@@ -18,16 +18,23 @@ import (
 
 // StockRecommendation represents a single stock recommendation item
 type StockRecommendation struct {
-    Ticker     string    `json:"ticker"`
-    Company    string    `json:"company"`
-    Brokerage  string    `json:"brokerage"`
-    Action     string    `json:"action"`
-    TargetFrom float64   `json:"target_from"`
-    TargetTo   float64   `json:"target_to"`
-    RatingFrom string    `json:"rating_from"`
-    RatingTo   string    `json:"rating_to"`
-    Time       time.Time `json:"time"`
+    Ticker        string    `json:"ticker"`
+    Company       string    `json:"company"`
+    Brokerage     string    `json:"brokerage"`
+    Action        string    `json:"action"`
+    TargetFrom    float64   `json:"target_from"`
+    TargetTo      float64   `json:"target_to"`
+    RatingFrom    string    `json:"rating_from"`
+    RatingTo      string    `json:"rating_to"`
+    Time          time.Time `json:"time"`
+
+    // Nuevos campos
+    Recommendation string    `json:"recommendation"`
+    Confidence     float64   `json:"confidence"`
+    Score          int       `json:"score"`
+    Reason         string    `json:"reason"`
 }
+
 
 // apiResponse represents the API response structure
 type apiResponse struct {
@@ -98,12 +105,13 @@ func fetchPage(token, nextPage string) (*apiResponse, error) {
 func insertRecommendation(db *sql.DB, rec StockRecommendation) error {
     _, err := db.Exec(`
         INSERT INTO stock_recommendations
-        (ticker, company, brokerage, action, target_from, target_to, rating_from, rating_to, time)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        (ticker, company, brokerage, action, target_from, target_to, rating_from, rating_to, time, recommendation, confidence, score, reason)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
         ON CONFLICT DO NOTHING
     `,
         rec.Ticker, rec.Company, rec.Brokerage, rec.Action,
-        rec.TargetFrom, rec.TargetTo, rec.RatingFrom, rec.RatingTo, rec.Time)
+        rec.TargetFrom, rec.TargetTo, rec.RatingFrom, rec.RatingTo, rec.Time,
+        rec.Recommendation, rec.Confidence, rec.Score, rec.Reason)
     return err
 }
 
@@ -149,6 +157,10 @@ func main() {
                 RatingTo:   item.RatingTo,
                 Time:       t,
             }
+
+            // Enrich the recommendation with additional fields
+            processRecommendation(&rec)
+
             if err := insertRecommendation(db, rec); err != nil {
                 log.Printf("Failed to insert: %v", err)
             } else {

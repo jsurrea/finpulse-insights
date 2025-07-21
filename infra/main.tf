@@ -76,6 +76,12 @@ resource "google_storage_bucket_object" "load_data_script" {
   source = "${path.module}/../admin/load_data.go"
 }
 
+resource "google_storage_bucket_object" "calculator_script" {
+  name   = "calculator.go"
+  bucket = google_storage_bucket.init_scripts.name
+  source = "${path.module}/../admin/calculator.go"
+}
+
 # CockroachDB instance
 resource "google_compute_instance" "cockroachdb" {
   name         = "cockroachdb-instance"
@@ -198,6 +204,7 @@ resource "google_compute_instance" "cockroachdb" {
     log "Downloading initialization files..."
     retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/init_db.sql $WORKDIR/init_db.sql"
     retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/load_data.go $WORKDIR/load_data.go"
+    retry 5 10 "gsutil cp gs://${google_storage_bucket.init_scripts.name}/calculator.go $WORKDIR/calculator.go"
     
     # Execute DDL script
     log "Executing DDL script..."
@@ -242,7 +249,7 @@ resource "google_compute_instance" "cockroachdb" {
     
     # Load data with timeout
     log "Loading data..."
-    timeout 600 go run load_data.go || {
+    timeout 600 go run load_data.go calculator.go || {
         log "ERROR: Data loading failed or timed out"
         exit 1
     }
@@ -267,7 +274,8 @@ resource "google_compute_instance" "cockroachdb" {
 
   depends_on = [
     google_storage_bucket_object.init_sql,
-    google_storage_bucket_object.load_data_script
+    google_storage_bucket_object.load_data_script,
+    google_storage_bucket_object.calculator_script
   ]
 }
 
