@@ -7,7 +7,7 @@ import Analytics from '@/pages/Analytics.vue'
 import Health from '@/pages/Health.vue'
 
 import StockList from '@/pages/stocks/StockList.vue'
-import StockDetail from '@/pages/stocks/_ticker.vue'
+import StockDetail from '@/pages/stocks/StockDetail.vue'
 
 import RecommendationsIndex from '@/pages/Recommendations/Index.vue'
 import RecommendationDetail from '@/pages/Recommendations/_id.vue'

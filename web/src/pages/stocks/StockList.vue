@@ -1,14 +1,11 @@
 <template>
   <div class="stocks-page">
     <div class="mb-8">
-      <h1 class="text-3xl font-weight-bold tracking-tight stocks-title mb-2">Stocks</h1>
+      <h1 class="text-3xl font-weight-bold tracking-tight mb-2">Stocks</h1>
       <p class="text-medium-emphasis">Search and browse stocks tracked by FinPulse.</p>
     </div>
 
-    <v-card elevation="2">
-      <v-card-title>
-        <span class="text-lg font-weight-bold">Stock List</span>
-      </v-card-title>
+    <v-card elevation="4">
 
       <v-card-text>
         <StockFilters :loading="loading" />
@@ -88,9 +85,14 @@ const loadStocks = async () => {
 
     await stocksStore.fetchStocks()
     stocks.value = stocksStore.stocks
-  } catch (err: any) {
-    error.value = err.message || 'Error loading stocks'
-    console.error('Stocks loading error:', err)
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      error.value = err.message
+      console.error('Stocks loading error:', err)
+    } else {
+      error.value = 'Error loading stocks'
+      console.error('Stocks loading error:', err)
+    }
   } finally {
     loading.value = false
   }
@@ -113,10 +115,5 @@ onMounted(() => {
 .stocks-page {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.stocks-title {
-  font-family: 'Inter', system-ui, sans-serif;
-  letter-spacing: -0.025em;
 }
 </style>

@@ -89,10 +89,29 @@ func getStockDetails(c *gin.Context) {
             "rating_to":   stock.RatingTo,
             "target_from": stock.TargetFrom,
             "target_to":   stock.TargetTo,
-            "time":        stock.Time,
+            "time":        stock.Time.Format(time.RFC3339),
+        },
+
+        // Use the unique record as the "history" of an item
+        "history": []gin.H{
+            {
+                "id":           stock.ID.String(), 
+                "ticker":       stock.Ticker,
+                "company":      stock.Company,
+                "brokerage":    stock.Brokerage,
+                "action":       stock.Action,
+                "rating_from":  stock.RatingFrom,
+                "rating_to":    stock.RatingTo,
+                "target_from":  stock.TargetFrom,
+                "target_to":    stock.TargetTo,
+                "time":         stock.Time.Format(time.RFC3339),
+                "recommendation": stock.Recommendation, 
+                "confidence":   stock.Confidence,      
+            },
         },
     })
 }
+
 
 func listRecommendations(c *gin.Context) {
     page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))

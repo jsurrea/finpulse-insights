@@ -97,6 +97,7 @@ function onNav() {
 }
 .sidebar-menu {
   padding-top: 10px;
+  flex-grow: 1;
 }
 .sidebar-label {
   margin-left: 10px;

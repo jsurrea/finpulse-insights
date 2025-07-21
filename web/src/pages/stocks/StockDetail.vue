@@ -155,8 +155,12 @@ const loadStockDetail = async () => {
 
     await stocksStore.fetchStockDetail(ticker)
     stock.value = stocksStore.currentStock
-  } catch (err: any) {
-    error.value = err.message || 'Error loading stock detail'
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      error.value = err.message
+    } else {
+      error.value = 'Error loading stock detail'
+    }
     console.error('Stock detail error:', err)
   } finally {
     loading.value = false
