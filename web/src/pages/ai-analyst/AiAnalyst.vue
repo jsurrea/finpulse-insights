@@ -3,7 +3,7 @@
     <div class="mb-8">
       <h1 class="text-h4 font-weight-bold mb-2">AI Financial Analyst</h1>
       <p class="text-medium-emphasis">
-        Assess a stock's potential based on recent recommendations and market data.
+        Get AI-powered analysis based on recent news and market data for any stock in your portfolio.
       </p>
     </div>
 
@@ -30,9 +30,7 @@
         <v-col
           v-for="analysis in store.analysisHistory.slice(0, 6)"
           :key="`${analysis.ticker}-${analysis.timestamp}`"
-          cols="12"
-          sm="6"
-          lg="4"
+          cols="12" sm="6" lg="4"
         >
           <v-card
             variant="outlined"
@@ -44,7 +42,6 @@
               <div class="d-flex justify-space-between align-center mb-2">
                 <div class="text-h6 font-weight-bold">{{ analysis.ticker }}</div>
                 <v-chip
-                  v-if="analysis.recommendation"
                   :color="getRecommendationColor(analysis.recommendation)"
                   variant="tonal"
                   size="small"
@@ -52,9 +49,8 @@
                   {{ analysis.recommendation }}
                 </v-chip>
               </div>
-              <div class="text-body-2 text-medium-emphasis mb-3">
-                {{ analysis.company }}
-              </div>
+              <div class="text-body-2 text-medium-emphasis mb-2">{{ analysis.company }}</div>
+              <div class="text-caption text-medium-emphasis mb-2">{{ analysis.brokerage }}</div>
               <div class="text-caption text-medium-emphasis">
                 {{ formatHistoryDate(analysis.timestamp) }}
               </div>
@@ -75,14 +71,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { format } from 'date-fns'
 import { useAIAnalyst } from '@/stores/aiAnalyst'
 import type { AIAnalysisResult } from '@/utils/types'
 import AnalysisForm from '@/components/ai-analyst/AnalysisForm.vue'
 import AnalysisResult from '@/components/ai-analyst/AnalysisResult.vue'
-import type { AIAnalysisFormData } from '@/utils/validation'
 
 const router = useRouter()
 const route = useRoute()
@@ -90,22 +85,15 @@ const store = useAIAnalyst()
 
 const showError = ref(false)
 
-const handleAnalysisSubmit = async (formData: AIAnalysisFormData) => {
+const handleAnalysisSubmit = async (ticker: string) => {
   try {
     // Update URL with current analysis params
     router.replace({
-      query: {
-        ...route.query,
-        ticker: formData.ticker,
-        company: formData.company,
-      },
+      query: { ...route.query, ticker }
     })
 
-    await store.analyzeStock({
-      ticker: formData.ticker,
-      company: formData.company,
-    })
-  } catch (error) {
+    await store.analyzeStock({ ticker })
+  } catch {
     showError.value = true
   }
 }
@@ -115,23 +103,16 @@ function loadHistoricalAnalysis(analysis: AIAnalysisResult) {
 
   // Update URL
   router.replace({
-    query: {
-      ticker: analysis.ticker,
-      company: analysis.company,
-    },
+    query: { ticker: analysis.ticker }
   })
 }
 
 function getRecommendationColor(recommendation: string) {
   switch (recommendation) {
-    case 'BUY':
-      return 'success'
-    case 'SELL':
-      return 'error'
-    case 'HOLD':
-      return 'warning'
-    default:
-      return 'primary'
+    case 'BUY': return 'success'
+    case 'SELL': return 'error'
+    case 'HOLD': return 'warning'
+    default: return 'primary'
   }
 }
 
@@ -140,14 +121,14 @@ function formatHistoryDate(timestamp: string): string {
 }
 
 // Watch for errors
-watch(
-  () => store.error,
-  (error) => {
-    if (error) {
-      showError.value = true
-    }
-  },
-)
+watch(() => store.error, (error) => {
+  if (error) showError.value = true
+})
+
+// Load history on mount
+onMounted(() => {
+  store.loadHistoryFromStorage()
+})
 </script>
 
 <style scoped>

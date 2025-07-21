@@ -4,35 +4,66 @@
       <span class="text-lg font-weight-bold">Analyze Stock</span>
     </v-card-title>
     <v-card-subtitle class="pb-4">
-      Enter a stock ticker and company name to begin.
+      Select a stock from your portfolio to begin AI analysis.
     </v-card-subtitle>
 
     <v-card-text>
       <v-form @submit.prevent="onSubmit">
         <div class="form-fields">
-          <v-text-field
-            v-model="ticker"
-            label="Ticker Symbol"
-            placeholder="e.g., AAPL, GOOGL"
+          <v-autocomplete
+            v-model="selectedStock"
+            :items="stockOptions"
+            item-title="displayName"
+            item-value="ticker"
+            label="Select Stock"
+            placeholder="Search by ticker or company name..."
             variant="outlined"
             density="comfortable"
-            :error-messages="errors.ticker"
+            :loading="store.loadingSearch"
             :disabled="loading"
-            @blur="validateField('ticker')"
+            :error-messages="error"
+            clearable
+            no-data-text="No stocks found"
             class="mb-4"
-          />
+            @update:search="onSearchInput"
+          >
+            <template #item="{ props, item }">
+              <v-list-item v-bind="props">
+                <template #prepend>
+                  <v-avatar size="32" color="primary" class="mr-3">
+                    <span class="text-caption font-weight-bold">
+                      {{ item.raw.ticker.substring(0, 2) }}
+                    </span>
+                  </v-avatar>
+                </template>
+                <template #append>
+                  <v-chip size="x-small" variant="outlined" color="primary">
+                    {{ item.raw.brokerage }}
+                  </v-chip>
+                </template>
+              </v-list-item>
+            </template>
+          </v-autocomplete>
 
-          <v-text-field
-            v-model="company"
-            label="Company Name"
-            placeholder="e.g., Apple Inc."
+          <!-- Información del stock seleccionado -->
+          <v-card
+            v-if="selectedStockInfo"
             variant="outlined"
-            density="comfortable"
-            :error-messages="errors.company"
-            :disabled="loading"
-            @blur="validateField('company')"
             class="mb-6"
-          />
+            color="primary"
+          >
+            <v-card-text class="py-3">
+              <div class="d-flex align-center justify-space-between">
+                <div>
+                  <div class="font-weight-bold text-h6">{{ selectedStockInfo.ticker }}</div>
+                  <div class="text-body-2 text-medium-emphasis">{{ selectedStockInfo.company }}</div>
+                </div>
+                <v-chip color="primary" variant="tonal" size="small">
+                  {{ selectedStockInfo.brokerage }}
+                </v-chip>
+              </div>
+            </v-card-text>
+          </v-card>
 
           <v-btn
             type="submit"
@@ -40,12 +71,12 @@
             block
             size="large"
             :loading="loading"
-            :disabled="!isFormValid || loading"
+            :disabled="!selectedStock || loading"
           >
             <template #prepend>
               <v-icon>fas fa-sparkles</v-icon>
             </template>
-            {{ loading ? 'Analyzing...' : 'Generate Analysis' }}
+            {{ loading ? 'Analyzing...' : 'Generate AI Analysis' }}
           </v-btn>
         </div>
       </v-form>
@@ -54,54 +85,72 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/yup'
 import { useAIAnalyst } from '@/stores/aiAnalyst'
-import { aiAnalysisSchema, type AIAnalysisFormData } from '@/utils/validation'
 
 const emit = defineEmits<{
-  'analysis-submitted': [data: AIAnalysisFormData]
+  'analysis-submitted': [ticker: string]
 }>()
 
 const route = useRoute()
 const store = useAIAnalyst()
 
-const { handleSubmit, errors, validateField, setFieldValue, meta } = useForm<AIAnalysisFormData>({
-  validationSchema: toTypedSchema(aiAnalysisSchema),
-  initialValues: {
-    ticker: (route.query.ticker as string) || '',
-    company: (route.query.company as string) || '',
-  },
-})
-
-const ticker = ref((route.query.ticker as string) || '')
-const company = ref((route.query.company as string) || '')
+const selectedStock = ref<string>('')
+const error = ref<string>('')
 
 const loading = computed(() => store.loading)
-const isFormValid = computed(() => meta.value.valid)
 
-// Sync with form validation
-watch(ticker, (newValue) => {
-  setFieldValue('ticker', newValue.toUpperCase())
-})
+const stockOptions = computed(() =>
+  store.stockOptions.map(stock => ({
+    ...stock,
+    displayName: `${stock.ticker} - ${stock.company}`
+  }))
+)
 
-watch(company, (newValue) => {
-  setFieldValue('company', newValue)
-})
+const selectedStockInfo = computed(() =>
+  store.selectedStockInfo || store.stockOptions.find(s => s.ticker === selectedStock.value)
+)
 
-const onSubmit = handleSubmit(async (values) => {
-  emit('analysis-submitted', values)
-})
+const onSearchInput = (searchValue: string) => {
+  store.searchStocks(searchValue || '')
+}
 
-onMounted(() => {
-  // Set initial values from query params
-  if (route.query.ticker) {
-    ticker.value = route.query.ticker as string
+const onSubmit = async () => {
+  error.value = ''
+
+  if (!selectedStock.value) {
+    error.value = 'Please select a stock to analyze'
+    return
   }
-  if (route.query.company) {
-    company.value = route.query.company as string
+
+  emit('analysis-submitted', selectedStock.value)
+}
+
+// Cargar opciones iniciales al montar el componente
+onMounted(async () => {
+  await store.loadStockOptions()
+
+  // Set from URL params if present
+  if (route.query.ticker) {
+    selectedStock.value = route.query.ticker as string
+    store.setSelectedStock(route.query.ticker as string)
+  }
+})
+
+// Limpiar el timer de debounce al desmontar
+onUnmounted(() => {
+  store.clearDebounceTimer()
+  store.clearSelectedStock()
+})
+
+// Watch for changes in selected stock
+watch(selectedStock, (newValue) => {
+  error.value = ''
+  if (newValue) {
+    store.setSelectedStock(newValue)
+  } else {
+    store.clearSelectedStock()
   }
 })
 </script>
