@@ -9,7 +9,7 @@ RUN go mod download
 
 # Copia el resto del proyecto y compila binario estático
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o stocks-api .
+RUN CGO_ENABLED=0 GOOS=linux go build -o stocks-api ./cmd/server
 
 # ---------- Final Image ----------
 FROM gcr.io/distroless/static
